@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@Entity(name = "cargo")
+@Entity(name = "CARGO")
 public class CargoEntity implements Serializable, GrantedAuthority {
 
     @Id
@@ -20,13 +20,10 @@ public class CargoEntity implements Serializable, GrantedAuthority {
     private Integer idCargo;
 
     @Column(name = "nome_cargo")
-    private String nome_cargo;
-
-    @ManyToMany(mappedBy = "cargos")
-    private List<UsuarioEntity> usuarios;
+    private String nome;
 
     @Override
     public String getAuthority() {
-        return this.nome_cargo;
+        return this.nome;
     }
 }

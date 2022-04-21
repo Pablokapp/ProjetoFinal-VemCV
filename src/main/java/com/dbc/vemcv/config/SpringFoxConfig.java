@@ -24,7 +24,7 @@ public class SpringFoxConfig {
                 .securityContexts(Collections.singletonList(securityContext()))
                 .securitySchemes(Collections.singletonList(apiKey()))
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.dbc.pokesuits"))
+                .apis(RequestHandlerSelectors.basePackage("com.dbc.vemcv"))
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false)

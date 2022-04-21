@@ -18,14 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenService tokenService;
     private final AuthenticationService authenticationService;
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable().and().cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/", "/auth", "/user/create-cadastrador").permitAll()
                 .antMatchers("/**").hasRole("CADASTRADOR")
                 .anyRequest().authenticated()
                 .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
