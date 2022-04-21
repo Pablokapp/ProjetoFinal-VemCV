@@ -27,8 +27,8 @@ public class ExperienciasEntity {
     @Column(name = "data_fim")
     private Date dataFim;
 
-    @Column(name = "descricao")
-    private String descricao;
+    @Column(name = "cargo")
+    private String cargo;
 
     @JsonIgnore
     @ManyToOne

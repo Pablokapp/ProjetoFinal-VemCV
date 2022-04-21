@@ -31,5 +31,5 @@ public class ExperienciasCreateDTO {
     @NotNull
     @NotEmpty
     @ApiModelProperty("Descrição de Tarefas/Cargo/Habilidades")
-    private String descricao;
+    private String cargo;
 }

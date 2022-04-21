@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DadosEscolaresRepository extends JpaRepository<DadosEscolaresEntity, Long> {
+public interface DadosEscolaresRepository extends JpaRepository<DadosEscolaresEntity, Integer> {
 
 }

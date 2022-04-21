@@ -39,8 +39,8 @@ public class CandidatoEntity {
     @Column(name = "numero")
     private Integer numero;
 
-    @Column(name = "complemento")
-    private String complemento;
+//    @Column(name = "complemento")
+//    private String complemento;
 
     @Column(name = "bairro")
     private String bairro;

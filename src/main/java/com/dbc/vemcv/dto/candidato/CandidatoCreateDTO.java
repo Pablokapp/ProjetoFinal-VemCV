@@ -42,8 +42,8 @@ public class CandidatoCreateDTO {
     @ApiModelProperty("Número do endereço do candidato")
     private Integer numero;
 
-    @ApiModelProperty("Complemento do endereço do candidato, pode ser nulo")
-    private String complemento;
+//    @ApiModelProperty("Complemento do endereço do candidato, pode ser nulo")
+//    private String complemento;
 
     @NotEmpty
     @ApiModelProperty("Bairro do endereço do candidato")

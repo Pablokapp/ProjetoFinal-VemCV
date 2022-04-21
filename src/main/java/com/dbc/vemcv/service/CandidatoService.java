@@ -11,6 +11,7 @@ import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.repository.CandidatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,10 +23,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CandidatoService {
 
-
     private final CandidatoRepository candidatoRepository;
     private final ObjectMapper objectMapper;
-
 
     public List<CandidatoDTO> list(Integer idCandidato) throws RegraDeNegocioException {
         List<CandidatoDTO>  candidatoByID = new ArrayList<>();
@@ -50,23 +49,17 @@ public class CandidatoService {
     }
 
     public CandidatoDTO update(Integer idCandidato, CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
-        CandidatoEntity entity = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
-        entity.setNome(candidatoCreateDTO.getNome());
-        if (!candidatoCreateDTO.getCpf().equals(entity.getCpf())) {
+        CandidatoEntity candidatoAtual = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        BeanUtils.copyProperties(candidatoCreateDTO, candidatoAtual, "id", "cpf");
+
+        if (!candidatoCreateDTO.getCpf().equals(candidatoAtual.getCpf())) {
             if (candidatoRepository.existsByCpf(candidatoCreateDTO.getCpf())) {
                 throw new RegraDeNegocioException("CPF já cadastrado");
             }
-            entity.setCpf(candidatoCreateDTO.getCpf());
+            candidatoAtual.setCpf(candidatoCreateDTO.getCpf());
         }
-        entity.setLogradouro(candidatoCreateDTO.getLogradouro());
-        entity.setComplemento(candidatoCreateDTO.getComplemento());
-        entity.setDataNascimento(candidatoCreateDTO.getDataNascimento());
-        entity.setNumero(candidatoCreateDTO.getNumero());
-        entity.setTelefone(candidatoCreateDTO.getTelefone());
-        entity.setSenioridade(candidatoCreateDTO.getSenioridade());
-        entity.setCargo(candidatoCreateDTO.getCargo());
-        CandidatoEntity update = candidatoRepository.save(entity);
-        return objectMapper.convertValue(update, CandidatoDTO.class);
+        CandidatoDTO candidatoAtualizado = objectMapper.convertValue((candidatoRepository.save(candidatoAtual)), CandidatoDTO.class);
+        return candidatoAtualizado;
     }
 
     public void delete(Integer idCandidato) throws RegraDeNegocioException {
@@ -87,9 +80,7 @@ public class CandidatoService {
         return candidatoById;
     }
 
-
-
-    public CandidatoDadosExperienciasDTO setCandidatoDadosExperienciasDTO(CandidatoEntity candidato) {
+    private CandidatoDadosExperienciasDTO setCandidatoDadosExperienciasDTO(CandidatoEntity candidato) {
         CandidatoDadosExperienciasDTO candidatoDadosExperienciasDTO = new CandidatoDadosExperienciasDTO();
         candidatoDadosExperienciasDTO.setCandidato(objectMapper.convertValue(candidato, CandidatoDTO.class));
         candidatoDadosExperienciasDTO.setDadosEscolares(
@@ -106,8 +97,6 @@ public class CandidatoService {
         );
         return candidatoDadosExperienciasDTO;
     }
-
-
 
 
 }
