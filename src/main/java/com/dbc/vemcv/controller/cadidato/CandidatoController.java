@@ -5,6 +5,7 @@ package com.dbc.vemcv.controller.cadidato;
 import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoDadosExperienciasDTO;
+import com.dbc.vemcv.dto.candidato.CandidatoReduzidoDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.CandidatoService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -54,7 +57,24 @@ public class CandidatoController implements CandidatoAPI {
         return ResponseEntity.ok("Candidato deletado com sucesso");
     }
 
-
+    @GetMapping("/get-reduzido")
+    public ResponseEntity<List<CandidatoReduzidoDTO>> getCandidatoReduzido(){
+        return ResponseEntity.ok(Arrays.asList(
+                CandidatoReduzidoDTO.builder()
+                        .idCandidato(1)
+                        .nome("nome1")
+                        .cargo("cargo1")
+                        .dataNascimento(LocalDate.now().minusYears(20))
+                        .senioridade("senioridade1")
+                        .build(),
+                CandidatoReduzidoDTO.builder()
+                        .idCandidato(2)
+                        .nome("nome2")
+                        .cargo("cargo2")
+                        .dataNascimento(LocalDate.now().minusYears(20))
+                        .senioridade("senioridade2")
+                        .build()));
+    }
 
 
 
