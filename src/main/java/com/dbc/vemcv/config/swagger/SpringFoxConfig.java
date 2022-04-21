@@ -1,4 +1,4 @@
-package com.dbc.vemcv.config;
+package com.dbc.vemcv.config.swagger;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
