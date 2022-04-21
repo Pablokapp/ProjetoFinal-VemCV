@@ -1,4 +1,4 @@
-package com.dbc.vemcv.controller;
+package com.dbc.vemcv.controller.usuario;
 
 import com.dbc.vemcv.dto.UsuarioCreateDTO;
 import com.dbc.vemcv.dto.UsuarioDTO;

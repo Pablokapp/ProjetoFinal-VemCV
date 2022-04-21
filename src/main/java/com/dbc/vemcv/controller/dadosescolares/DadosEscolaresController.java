@@ -1,4 +1,4 @@
-package com.dbc.vemcv.controller;
+package com.dbc.vemcv.controller.dadosescolares;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

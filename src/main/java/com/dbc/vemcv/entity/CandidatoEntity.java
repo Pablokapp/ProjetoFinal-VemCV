@@ -51,7 +51,7 @@ public class CandidatoEntity {
 
     @JsonIgnore
     @OneToMany(mappedBy = "candidato")
-    private Set<DadosEscolaresEntity> dadosEscolareEntities;
+    private Set<DadosEscolaresEntity> dadosEscolares;
 
     @JsonIgnore
     @OneToMany(mappedBy = "candidato")
