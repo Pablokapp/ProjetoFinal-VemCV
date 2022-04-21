@@ -2,14 +2,11 @@ package com.dbc.vemcv.controller.cadidato;
 
 
 
-import com.dbc.vemcv.dto.CandidatoCreateDTO;
-import com.dbc.vemcv.dto.CandidatoDTO;
-import com.dbc.vemcv.dto.CandidatoDadosExperienciasDTO;
+import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
+import com.dbc.vemcv.dto.candidato.CandidatoDTO;
+import com.dbc.vemcv.dto.candidato.CandidatoDadosExperienciasDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.CandidatoService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;

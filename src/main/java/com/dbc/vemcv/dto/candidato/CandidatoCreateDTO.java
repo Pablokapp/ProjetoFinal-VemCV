@@ -1,4 +1,4 @@
-package com.dbc.vemcv.dto;
+package com.dbc.vemcv.dto.candidato;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -44,6 +44,14 @@ public class CandidatoCreateDTO {
 
     @ApiModelProperty("Complemento do endereço do candidato, pode ser nulo")
     private String complemento;
+
+    @NotEmpty
+    @ApiModelProperty("Bairro do endereço do candidato")
+    private String bairro;
+
+    @NotEmpty
+    @ApiModelProperty("Cidade do endereço do candidato")
+    private String cidade;
 
     @NotBlank
     @NotNull

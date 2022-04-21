@@ -1,7 +1,11 @@
 package com.dbc.vemcv.service;
 
 
-import com.dbc.vemcv.dto.*;
+import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
+import com.dbc.vemcv.dto.candidato.CandidatoDTO;
+import com.dbc.vemcv.dto.candidato.CandidatoDadosExperienciasDTO;
+import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
+import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.repository.CandidatoRepository;

@@ -1,7 +1,7 @@
 package com.dbc.vemcv.controller.auth;
 
 
-import com.dbc.vemcv.dto.LoginDTO;
+import com.dbc.vemcv.dto.usuario.LoginDTO;
 import com.dbc.vemcv.security.TokenService;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.dbc.vemcv.controller.usuario;
 
-import com.dbc.vemcv.dto.UsuarioCreateDTO;
-import com.dbc.vemcv.dto.UsuarioDTO;
+import com.dbc.vemcv.dto.usuario.UsuarioCreateDTO;
+import com.dbc.vemcv.dto.usuario.UsuarioDTO;
 import com.dbc.vemcv.enums.Cargo;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.UsuarioService;

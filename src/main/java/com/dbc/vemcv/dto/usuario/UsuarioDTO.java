@@ -1,4 +1,4 @@
-package com.dbc.vemcv.dto;
+package com.dbc.vemcv.dto.usuario;
 
 
 import io.swagger.annotations.ApiModelProperty;

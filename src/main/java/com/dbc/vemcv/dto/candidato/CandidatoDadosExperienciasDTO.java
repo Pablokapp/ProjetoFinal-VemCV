@@ -1,5 +1,7 @@
-package com.dbc.vemcv.dto;
+package com.dbc.vemcv.dto.candidato;
 
+import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
+import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;

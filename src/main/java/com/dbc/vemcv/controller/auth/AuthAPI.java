@@ -1,6 +1,6 @@
 package com.dbc.vemcv.controller.auth;
 
-import com.dbc.vemcv.dto.LoginDTO;
+import com.dbc.vemcv.dto.usuario.LoginDTO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;

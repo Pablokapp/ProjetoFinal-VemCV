@@ -1,4 +1,4 @@
-package com.dbc.vemcv.dto;
+package com.dbc.vemcv.dto.dadosescolares;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -13,11 +13,14 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ExperienciasCreateDTO {
+public class DadosEscolaresDTO {
+    @ApiModelProperty("Identificador do dado escolar")
+    private Integer idDadosEscolares;
+
     @NotNull
     @NotEmpty
-    @ApiModelProperty("Nome da empresa")
-    private String nomeEmpresa;
+    @ApiModelProperty("Nome da Instituição/Escola/Universidade")
+    private String instituicao;
 
     @NotNull
     @Past
@@ -30,6 +33,6 @@ public class ExperienciasCreateDTO {
 
     @NotNull
     @NotEmpty
-    @ApiModelProperty("Descrição de Tarefas/Cargo/Habilidades")
+    @ApiModelProperty("Descrição de Curso/Semestre/Conclusão/Habilidades")
     private String descricao;
 }
