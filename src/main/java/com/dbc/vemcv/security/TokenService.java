@@ -52,8 +52,8 @@ public class TokenService {
         return PREFIX + token;
     }
 
-    public Authentication getAuthentication(HttpServletRequest request){//VERIFICA AUTENTICACAO, RETORNANDO UM "UPAT" COM NOME DE USUARIO E PERMISSOES
-        String tokenBearer = request.getHeader(HEADER_AUTHORIZATION);//busca o header com "Authorization"
+    public Authentication getAuthentication(HttpServletRequest request){
+        String tokenBearer = request.getHeader(HEADER_AUTHORIZATION);
         if(tokenBearer!=null){
             String token = tokenBearer.replaceFirst(PREFIX, "");
             Claims body = Jwts.parser()
