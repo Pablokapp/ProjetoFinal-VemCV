@@ -1,6 +1,6 @@
 package com.dbc.vemcv.service;
 
-import com.dbc.vemcv.dto.CurriculoDTO;
+import com.dbc.vemcv.dto.curriculo.CurriculoDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.entity.CurriculoEntity;
 import com.dbc.vemcv.exceptions.FileStorageException;

@@ -2,7 +2,7 @@ package com.dbc.vemcv.controller.cadidato;
 
 
 
-import com.dbc.vemcv.dto.CandidatoCompletoPostDTO;
+import com.dbc.vemcv.dto.candidato.CandidatoCompletoPostDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoDadosExperienciasDTO;
@@ -10,7 +10,6 @@ import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
-import com.dbc.vemcv.dto.usuario.UsuarioDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.CandidatoService;
 import com.dbc.vemcv.service.DadosEscolaresService;

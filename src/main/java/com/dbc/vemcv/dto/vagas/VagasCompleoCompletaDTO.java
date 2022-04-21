@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VagasCompleoDTO {
+public class VagasCompleoCompletaDTO {
     @JsonProperty("Ano_Mes_Dt_Abertura")
     private String Ano_Mes_Dt_Abertura;
     @JsonProperty("Semana_Data_Abertura")
