@@ -48,7 +48,7 @@ public class UsuarioEntity implements UserDetails {
 
 
     @ManyToOne()
-    @JoinColumn(name = "cargo")
+    @JoinColumn(name = "fk_cargo")
     private CargoEntity cargo;
 
 
