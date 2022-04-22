@@ -3,6 +3,7 @@ package com.dbc.vemcv.dto.vagas;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -13,7 +14,7 @@ public class VagaCompleoReduzidaDTO {
     private String status;
     private String responsavel;
     private String estado;
-    private Date dataAbertura;
+    private LocalDate dataAbertura;
     private String cliente;
     private String cidade;
     private String analista;

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -25,11 +26,11 @@ public class DadosEscolaresDTO {
     @NotNull
     @Past
     @ApiModelProperty("Data de início, deve ser uma data passada")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Past
     @ApiModelProperty("Data de encerramento, deve ser uma data passada, pode ser nulo")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @NotNull
     @NotEmpty

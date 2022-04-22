@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Data
+@Builder
 public class CandidatoCompletoPostDTO {
 
     @NotBlank
@@ -74,12 +75,12 @@ public class CandidatoCompletoPostDTO {
     @NotNull
     @Past
     @ApiModelProperty("Data de início, deve ser uma data passada")
-    private Date dataInicioCurso; // data de inicio do curso
+    private LocalDate dataInicioCurso; // data de inicio do curso
 
 
     @Past
     @ApiModelProperty("Data de encerramento, deve ser uma data passada, pode ser nulo")
-    private Date dataFimCurso;
+    private LocalDate dataFimCurso;
 
     @NotNull
     @NotEmpty
@@ -95,12 +96,12 @@ public class CandidatoCompletoPostDTO {
     @NotNull
     @Past
     @ApiModelProperty("Data de início, deve ser uma data passada")
-    private Date dataInicioExperiencia; // data de inicio do curso
+    private LocalDate dataInicioExperiencia; // data de inicio do curso
 
 
     @Past
     @ApiModelProperty("Data de encerramento, deve ser uma data passada, pode ser nulo")
-    private Date dataFimExperiencia; //
+    private LocalDate dataFimExperiencia; //
 
     @NotNull
     @NotEmpty

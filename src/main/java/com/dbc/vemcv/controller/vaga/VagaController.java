@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -31,7 +32,7 @@ public class VagaController {
                         .status("status1")
                         .responsavel("responsavel1")
                         .estado("estado1")
-                        .dataAbertura(Date.from(LocalDateTime.now().minusYears(1).toInstant(ZoneOffset.UTC)))
+                        .dataAbertura(LocalDate.now().minusYears(1))
                         .cliente("cliente1")
                         .cidade("cidade1")
                         .analista("analista1")
@@ -42,7 +43,7 @@ public class VagaController {
                         .status("status2")
                         .responsavel("responsavel2")
                         .estado("estado2")
-                        .dataAbertura(Date.from(LocalDateTime.now().minusYears(1).toInstant(ZoneOffset.UTC)))
+                        .dataAbertura(LocalDate.now().minusYears(1))
                         .cliente("cliente2")
                         .cidade("cidade2")
                         .analista("analista2")
@@ -53,7 +54,7 @@ public class VagaController {
                         .status("status3")
                         .responsavel("responsavel3")
                         .estado("estado3")
-                        .dataAbertura(Date.from(LocalDateTime.now().minusYears(1).toInstant(ZoneOffset.UTC)))
+                        .dataAbertura(LocalDate.now().minusYears(1))
                         .cliente("cliente3")
                         .cidade("cidade3")
                         .analista("analista3")

@@ -2,10 +2,7 @@ package com.dbc.vemcv.controller.cadidato;
 
 
 
-import com.dbc.vemcv.dto.candidato.CandidatoCompletoPostDTO;
-import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
-import com.dbc.vemcv.dto.candidato.CandidatoDTO;
-import com.dbc.vemcv.dto.candidato.CandidatoDadosExperienciasDTO;
+import com.dbc.vemcv.dto.candidato.*;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
@@ -20,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -102,8 +100,36 @@ public class CandidatoController implements CandidatoAPI {
         return ResponseEntity.ok("Candidato deletado com sucesso");
     }
 
+    @GetMapping("/candidato-completo-formato-de-entrada")
+    public ResponseEntity<CandidatoCompletoPostDTO> getCandidatoCompletoFormatoNovo(@RequestParam("id-candidato") Integer idCandidato){
+        CandidatoCompletoPostDTO candidatoCompletoDTO = CandidatoCompletoPostDTO.builder()
+                .cpf("12345678910")
+                .nome("nome1")
+                .dataNascimento(LocalDate.now().minusYears(1))
+                .logradouro("logradouro1")
+                .cidade("cidade1")
+                .bairro("bairro1")
+                .telefone("telefone1")
+                .numero(1)
+                .instituicao("instituicao1")
+                .descricao("descricao1")
+                .dataInicioCurso(LocalDate.now().minusYears(1))
+                .dataFimCurso(LocalDate.now().minusDays(1))
+                .nomeEmpresa("nomeEmpresa1")
+                .cargo("cargo1")
+                .dataInicioExperiencia(LocalDate.now().minusYears(1))
+                .dataFimExperiencia(LocalDate.now().minusDays(1))
+                .senioridade("senioridade1")
+                .build();
 
+        return ResponseEntity.ok(candidatoCompletoDTO);
+    }
 
-
+    @GetMapping("/get-paginado")
+    public ResponseEntity<PaginaCandidatoDTO> listPaginado(@RequestParam(value = "idCandidato", required = false) Integer idCandidato,
+                                                           @RequestParam(value = "pagina", required = false, defaultValue = "0") Integer pagina,
+                                                           @RequestParam(value = "quantidadePorPagina", required = false, defaultValue = "10") Integer quantidadePorPagina) throws RegraDeNegocioException {
+        return ResponseEntity.ok(candidatoService.listPaginado(idCandidato,pagina,quantidadePorPagina));
+    }
 
 }

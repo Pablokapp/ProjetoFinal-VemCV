@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -22,10 +23,10 @@ public class ExperienciasEntity {
     private String nomeEmpresa;
 
     @Column(name = "data_inicio")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Column(name = "data_fim")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @Column(name = "cargo")
     private String cargo;

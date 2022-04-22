@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -21,10 +22,10 @@ public class DadosEscolaresEntity {
     private String instituicao;
 
     @Column(name = "data_inicio")
-    private Date dataInicio;
+    private LocalDate dataInicio;
 
     @Column(name = "data_fim")
-    private Date dataFim;
+    private LocalDate dataFim;
 
     @Column(name = "descricao")
     private String descricao;
