@@ -17,7 +17,6 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,28 +36,29 @@ public class CandidatoService {
                     .map(candidato -> objectMapper.convertValue(candidato, CandidatoDTO.class))
                     .collect(Collectors.toList());
         }
-        CandidatoEntity candidatoEntity = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidatoEntity = this.findById(idCandidato);
         candidatoByID.add(objectMapper.convertValue(candidatoEntity, CandidatoDTO.class));
         return candidatoByID;
     }
 
     public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
-        if (candidatoRepository.existsByCpf(candidatoCreateDTO.getCpf())) {
-            throw new RegraDeNegocioException("CPF já cadastrado");
-        }
+        this.validarCPF(candidatoCreateDTO.getCpf());
         CandidatoEntity entity = objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);
         CandidatoEntity save = candidatoRepository.save(entity);
         return objectMapper.convertValue(save, CandidatoDTO.class);
     }
 
+    private CandidatoEntity save(CandidatoEntity candidato) throws RegraDeNegocioException {
+        this.validarCPF(candidato.getCpf());
+        return candidatoRepository.save(candidato);
+    }
+
     public CandidatoDTO update(Integer idCandidato, CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
-        CandidatoEntity candidatoAtual = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidatoAtual = this.findById(idCandidato);
         BeanUtils.copyProperties(candidatoCreateDTO, candidatoAtual, "id", "cpf");
 
         if (!candidatoCreateDTO.getCpf().equals(candidatoAtual.getCpf())) {
-            if (candidatoRepository.existsByCpf(candidatoCreateDTO.getCpf())) {
-                throw new RegraDeNegocioException("CPF já cadastrado");
-            }
+            this.validarCPF(candidatoCreateDTO.getCpf());
             candidatoAtual.setCpf(candidatoCreateDTO.getCpf());
         }
         CandidatoDTO candidatoAtualizado = objectMapper.convertValue((candidatoRepository.save(candidatoAtual)), CandidatoDTO.class);
@@ -66,7 +66,7 @@ public class CandidatoService {
     }
 
     public void delete(Integer idCandidato) throws RegraDeNegocioException {
-        CandidatoEntity candidato = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidato = this.findById(idCandidato);
         candidatoRepository.delete(candidato);
     }
 
@@ -78,7 +78,7 @@ public class CandidatoService {
                     .map(this::setCandidatoDadosExperienciasDTO)
                     .collect(Collectors.toList());
         }
-        CandidatoEntity candidatoEntity = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidatoEntity = this.findById(idCandidato);
         candidatoById.add(setCandidatoDadosExperienciasDTO(candidatoEntity));
         return candidatoById;
     }
@@ -113,13 +113,23 @@ public class CandidatoService {
                     .totalDePaginas(paginaCandidatos.getTotalPages())
                     .build();
         }
-        CandidatoEntity candidatoEntity = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidatoEntity = this.findById(idCandidato);
         candidatoByID.add(objectMapper.convertValue(candidatoEntity, CandidatoDTO.class));
         return PaginaCandidatoDTO.builder()
                 .candidatos(candidatoByID)
                 .totalDeElementos(1L)
                 .totalDePaginas(1)
                 .build();
+    }
+
+    private void validarCPF(String cpf) throws RegraDeNegocioException {
+        if (candidatoRepository.existsByCpf(cpf)) {
+            throw new RegraDeNegocioException("CPF já cadastrado");
+        }
+    }
+
+    private CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException{
+        return candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
     }
 
 }

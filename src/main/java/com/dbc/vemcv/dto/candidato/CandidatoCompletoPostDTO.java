@@ -89,7 +89,7 @@ public class CandidatoCompletoPostDTO {
     @NotNull
     @NotEmpty
     @ApiModelProperty("Descrição de Tarefas/Cargo/Habilidades")
-    private String cargo; // experiencia
+    private String cargo;
 
 
     @NotNull
@@ -106,7 +106,7 @@ public class CandidatoCompletoPostDTO {
     @NotNull
     @NotEmpty
     @ApiModelProperty("Descrição de Cargo da experiencia")
-    private String descricaoDoCargo;
+    private String descricaoDoCargo;//experiencia
 
     @NotNull
     @NotEmpty

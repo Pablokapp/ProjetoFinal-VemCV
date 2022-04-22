@@ -9,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -32,5 +31,5 @@ public class ExperienciasCreateDTO {
     @NotNull
     @NotEmpty
     @ApiModelProperty("Descrição de Tarefas/Cargo/Habilidades")
-    private String cargo;
+    private String descricao;
 }

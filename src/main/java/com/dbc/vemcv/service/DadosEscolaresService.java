@@ -53,5 +53,10 @@ public class DadosEscolaresService {
         dadosEscolaresRepository.delete(dadosEscolares);
     }
 
+    public List<DadosEscolaresDTO> findByIdCandidato(Integer idCandidato){
+        return dadosEscolaresRepository.findByIdCandidato(idCandidato).stream()
+                .map(de->objectMapper.convertValue(de,DadosEscolaresDTO.class))
+                .collect(Collectors.toList());
+    }
 
 }

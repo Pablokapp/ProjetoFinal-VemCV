@@ -43,7 +43,7 @@ public class ExperienciasService {
         entity.setNomeEmpresa(experienciasCreateDTO.getNomeEmpresa());
         entity.setDataInicio(experienciasCreateDTO.getDataInicio());
         entity.setDataFim(experienciasCreateDTO.getDataFim());
-        entity.setCargo(experienciasCreateDTO.getCargo());
+        entity.setDescricao(experienciasCreateDTO.getDescricao());
         ExperienciasEntity update = experienciasRepository.save(entity);
         return objectMapper.convertValue(update, ExperienciasDTO.class);
     }
@@ -53,5 +53,10 @@ public class ExperienciasService {
         experienciasRepository.delete(experiencias);
     }
 
+    public List<ExperienciasDTO> findByIdCandidato(Integer idCandidato){
+        return experienciasRepository.findByIdCandidato(idCandidato).stream()
+                .map(e->objectMapper.convertValue(e,ExperienciasDTO.class))
+                .collect(Collectors.toList());
+    }
 
 }
