@@ -67,12 +67,13 @@ public class CandidatoController implements CandidatoAPI {
         dadosEscolaresCreateDTO.setInstituicao(candidatoCompletoPostDTO.getInstituicao());
         dadosEscolaresCreateDTO.setDataInicio(candidatoCompletoPostDTO.getDataInicioCurso());
         dadosEscolaresCreateDTO.setDataFim(candidatoCompletoPostDTO.getDataFimCurso());
-        dadosEscolaresCreateDTO.setDescricao(candidatoCompletoPostDTO.getDescricao());
+        dadosEscolaresCreateDTO.setDescricao(candidatoCompletoPostDTO.getDescricaoDoCurso());
 
         ExperienciasCreateDTO experienciasCreateDTO = new ExperienciasCreateDTO();
         experienciasCreateDTO.setNomeEmpresa(candidatoCompletoPostDTO.getNomeEmpresa());
         experienciasCreateDTO.setDataInicio(candidatoCompletoPostDTO.getDataInicioExperiencia());
         experienciasCreateDTO.setDataFim(candidatoCompletoPostDTO.getDataFimExperiencia());
+        experienciasCreateDTO.setCargo(candidatoCompletoPostDTO.getDescricaoDoCargo());
 
         CandidatoDTO candidatoDTO = candidatoService.create(candidatoCreateDTO);
 

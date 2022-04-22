@@ -69,7 +69,7 @@ public class CandidatoCompletoPostDTO {
     @NotNull
     @NotEmpty
     @ApiModelProperty("Descrição de Curso/Semestre/Conclusão/Habilidades")
-    private String descricao;
+    private String descricaoDoCurso;
 
     @NotNull
     @Past
@@ -101,6 +101,12 @@ public class CandidatoCompletoPostDTO {
     @Past
     @ApiModelProperty("Data de encerramento, deve ser uma data passada, pode ser nulo")
     private LocalDate dataFimExperiencia; //
+
+    @NotBlank
+    @NotNull
+    @NotEmpty
+    @ApiModelProperty("Descrição de Cargo da experiencia")
+    private String descricaoDoCargo;
 
     @NotNull
     @NotEmpty
