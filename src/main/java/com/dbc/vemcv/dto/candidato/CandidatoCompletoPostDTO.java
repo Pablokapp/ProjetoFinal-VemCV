@@ -5,7 +5,6 @@ import lombok.*;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
 @Builder

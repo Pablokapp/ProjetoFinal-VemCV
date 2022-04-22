@@ -101,8 +101,9 @@ public class CandidatoController implements CandidatoAPI {
     }
 
     @GetMapping("/candidato-completo-formato-de-entrada")
-    public ResponseEntity<CandidatoCompletoPostDTO> getCandidatoCompletoFormatoNovo(@RequestParam("id-candidato") Integer idCandidato){
-        CandidatoCompletoPostDTO candidatoCompletoDTO = CandidatoCompletoPostDTO.builder()
+    public ResponseEntity<CandidatoCompletoPostComIdDTO> getCandidatoCompletoFormatoNovo(@RequestParam("id-candidato") Integer idCandidato){
+        CandidatoCompletoPostComIdDTO candidatoCompletoDTO = CandidatoCompletoPostComIdDTO.builder()
+                .idCandidato(1)
                 .cpf("12345678910")
                 .nome("nome1")
                 .dataNascimento(LocalDate.now().minusYears(1))
