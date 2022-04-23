@@ -10,16 +10,12 @@ import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
-import com.dbc.vemcv.entity.CandidatoEntity;
-import com.dbc.vemcv.entity.DadosEscolaresEntity;
-import com.dbc.vemcv.entity.ExperienciasEntity;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,34 +28,24 @@ public class CandidatoCompletoService {
 
     private final ObjectMapper objectMapper;
 
-    /*public CandidatoCompletoDTO create(CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
-        CandidatoEntity candidato = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoEntity.class);
-        candidato.setDadosEscolares(new HashSet<>());
-        candidato.setExperiencias(new HashSet<>());
-        for(DadosEscolaresCreateDTO dadosEscolares: candidatoCompletoCreateDTO.getDadosEscolares()){
-            DadosEscolaresEntity dadosEscolaresEntity = objectMapper.convertValue(dadosEscolares, DadosEscolaresEntity.class);
-            dadosEscolaresEntity.setCandidato(candidato);
-            candidato.getDadosEscolares().add(dadosEscolaresEntity);
-        }
-        for(ExperienciasCreateDTO experiencias: candidatoCompletoCreateDTO.getExperiencias()){
-            ExperienciasEntity experienciasEntity = objectMapper.convertValue(experiencias, ExperienciasEntity.class);
-            experienciasEntity.setCandidato(candidato);
-            candidato.getExperiencias().add(experienciasEntity);
-        }
-        CandidatoEntity candidatoSalvo = candidatoService.save(candidato);
 
-        CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(candidatoSalvo,CandidatoCompletoDTO.class);
-        candidatoCompletoDTO.setDadosEscolares(new ArrayList<>());
-        candidatoCompletoDTO.setExperiencias(new ArrayList<>());
-        for(DadosEscolaresEntity dadosEscolares: candidatoSalvo.getDadosEscolares()){
-            candidatoCompletoDTO.getDadosEscolares().add(objectMapper.convertValue(dadosEscolares, DadosEscolaresDTO.class));
-        }
-        for(ExperienciasEntity experiencias: candidatoSalvo.getExperiencias()){
-            candidatoCompletoDTO.getExperiencias().add(objectMapper.convertValue(experiencias, ExperienciasDTO.class));
-        }
+    public PaginaCandidatoCompletoDTO listPaginado(Integer idCandidato, Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
+        PaginaCandidatoDTO paginaCandidatoDTO = candidatoService.listPaginado(idCandidato, pagina, quantidadePorPagina);
+        List<CandidatoCompletoDTO> candidatoCompletoDTOList = paginaCandidatoDTO.getCandidatos().stream()
+                .map(c->{
+                    CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(c,CandidatoCompletoDTO.class);
+                    candidatoCompletoDTO.setDadosEscolares(dadosEscolaresService.findByIdCandidato(c.getIdCandidato()));
+                    candidatoCompletoDTO.setExperiencias(experienciasService.findByIdCandidato(c.getIdCandidato()));
+                    return candidatoCompletoDTO;
+                })
+                .collect(Collectors.toList());
 
-        return candidatoCompletoDTO;
-    }*/
+        return PaginaCandidatoCompletoDTO.builder()
+                .candidatosCompletos(candidatoCompletoDTOList)
+                .totalDeElementos(paginaCandidatoDTO.getTotalDeElementos())
+                .totalDePaginas(paginaCandidatoDTO.getTotalDePaginas())
+                .build();
+    }
 
     public CandidatoCompletoDTO create(CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
@@ -82,34 +68,34 @@ public class CandidatoCompletoService {
         return candidatoCompletoDTO;
     }
 
-    public PaginaCandidatoCompletoDTO listPaginado(Integer idCandidato, Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
-        PaginaCandidatoDTO paginaCandidatoDTO = candidatoService.listPaginado(idCandidato, pagina, quantidadePorPagina);
-        List<CandidatoCompletoDTO> candidatoCompletoDTOList = paginaCandidatoDTO.getCandidatos().stream()
-                .map(c->{
-                    CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(c,CandidatoCompletoDTO.class);
-                    candidatoCompletoDTO.setDadosEscolares(dadosEscolaresService.findByIdCandidato(c.getIdCandidato()));
-                    candidatoCompletoDTO.setExperiencias(experienciasService.findByIdCandidato(c.getIdCandidato()));
-                    return candidatoCompletoDTO;
-                })
-                .collect(Collectors.toList());
 
-        return PaginaCandidatoCompletoDTO.builder()
-                .candidatosCompletos(candidatoCompletoDTOList)
-                .totalDeElementos(paginaCandidatoDTO.getTotalDeElementos())
-                .totalDePaginas(paginaCandidatoDTO.getTotalDePaginas())
-                .build();
-    }
+    //todo atualizar as experiencias e dados escolares ao invés de apagar e criar?
+    public CandidatoCompletoDTO update(Integer idCandidato, CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
+        CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
 
-    /*public List<CandidatoDadosExperienciasDTO> listCandidatosDadosExperiencias(Integer idCandidato) throws RegraDeNegocioException {
-        List<CandidatoDadosExperienciasDTO> candidatoById = new ArrayList<>();
-        if(idCandidato == null) {
-            return candidatoRepository.findAll()
-                    .stream()
-                    .map(this::setCandidatoDadosExperienciasDTO)
-                    .collect(Collectors.toList());
+        CandidatoDTO candidatoAtualizado = candidatoService.update(idCandidato, candidatoCreateDTO);
+        List<DadosEscolaresDTO> dadosEscolaresList = dadosEscolaresService.findByIdCandidato(idCandidato);
+        List<ExperienciasDTO> experienciasList = experienciasService.findByIdCandidato(idCandidato);
+        for(DadosEscolaresDTO dadosEscolaresDTO:dadosEscolaresList){
+            dadosEscolaresService.delete(dadosEscolaresDTO.getIdDadosEscolares());
         }
-        CandidatoEntity candidatoEntity = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
-        candidatoById.add(setCandidatoDadosExperienciasDTO(candidatoEntity));
-        return candidatoById;
-    }*/
+        for(ExperienciasDTO experienciasDTO:experienciasList){
+            experienciasService.delete(experienciasDTO.getIdExperiencia());
+        }
+
+        List<DadosEscolaresDTO> dadosEscolaresDTOList = new ArrayList<>();
+        List<ExperienciasDTO> experienciasDTOList = new ArrayList<>();
+        for(DadosEscolaresCreateDTO dadosEscolares: candidatoCompletoCreateDTO.getDadosEscolares()){
+            dadosEscolaresDTOList.add(dadosEscolaresService.create(candidatoAtualizado.getIdCandidato(),dadosEscolares));
+        }
+        for(ExperienciasCreateDTO experiencia:candidatoCompletoCreateDTO.getExperiencias()){
+            experienciasDTOList.add(experienciasService.create(candidatoAtualizado.getIdCandidato(),experiencia));
+        }
+
+        CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(candidatoAtualizado,CandidatoCompletoDTO.class);
+        candidatoCompletoDTO.setDadosEscolares(dadosEscolaresDTOList);
+        candidatoCompletoDTO.setExperiencias(experienciasDTOList);
+
+        return candidatoCompletoDTO;
+    }
 }

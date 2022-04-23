@@ -22,9 +22,14 @@ public class CandidatoCompletoController {
     }
 
     @GetMapping("/get-paginado")
-    public ResponseEntity<PaginaCandidatoCompletoDTO> listPaginado(@RequestParam(value = "idCandidato", required = false) Integer idCandidato,
+    public ResponseEntity<PaginaCandidatoCompletoDTO> listPaginado(@RequestParam(value = "id-candidato", required = false) Integer idCandidato,
                                                                    @RequestParam(value = "pagina", required = false, defaultValue = "0") Integer pagina,
-                                                                   @RequestParam(value = "quantidadePorPagina", required = false, defaultValue = "10") Integer quantidadePorPagina) throws RegraDeNegocioException {
+                                                                   @RequestParam(value = "quantidade-por-pagina", required = false, defaultValue = "10") Integer quantidadePorPagina) throws RegraDeNegocioException {
         return ResponseEntity.ok(candidatoCompletoService.listPaginado(idCandidato,pagina,quantidadePorPagina));
+    }
+
+    @PutMapping
+    public ResponseEntity<CandidatoCompletoDTO> update(@RequestParam(value = "id-candidato") Integer idCandidato, @RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException {
+        return ResponseEntity.ok(candidatoCompletoService.update(idCandidato, candidato));
     }
 }
