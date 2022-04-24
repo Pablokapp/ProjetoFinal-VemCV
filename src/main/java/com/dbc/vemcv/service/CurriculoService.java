@@ -32,33 +32,31 @@ public class CurriculoService {
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public CurriculoDTO uploadCurriculoCandidato(MultipartFile file, Integer idCandidato) throws RegraDeNegocioException {
+    public CurriculoDTO uploadCurriculoCandidato(MultipartFile curriculo, Integer idCandidato) throws RegraDeNegocioException {
 
-        //Recupera o candidato
-        CandidatoEntity candidato = candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidato = candidatoRepository.findById(idCandidato)
+                .orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
 
-        //
-        String fileName = StringUtils.cleanPath(new BCryptPasswordEncoder().encode(idCandidato + "_" + candidato.getNome()) + ".pdf");
+        String nomeDoArquivo = StringUtils.cleanPath(new BCryptPasswordEncoder()
+                .encode(idCandidato + "_" + candidato.getNome()) + ".pdf");
 
-        if(!file.getContentType().equalsIgnoreCase("application/pdf")){
-            throw new RegraDeNegocioException("O arquivo enviado deve estar no formato pdf");
+        if(!curriculo.getContentType().equalsIgnoreCase("application/pdf")){
+            throw new RegraDeNegocioException("O arquivo não está no formato pdf");
         }
 
         try {
-            if (fileName.contains("..")) {
-                throw new FileStorageException("O arquivo tem um nome inválido " + fileName);
-            }
+            if (nomeDoArquivo.contains("..")) {
+                throw new FileStorageException("O arquivo tem um nome inválido" + nomeDoArquivo); }
 
             CurriculoEntity curriculoCandidato = curriculoRepository.getCurriculoByIdCandidato(idCandidato);
 
             if (curriculoCandidato == null) {
-                curriculoCandidato = new CurriculoEntity();
-            }
+                curriculoCandidato = new CurriculoEntity(); }
 
-            curriculoCandidato.setSize(file.getSize());
-            curriculoCandidato.setFileName(fileName);
-            curriculoCandidato.setFileType(file.getContentType());
-            curriculoCandidato.setData(file.getBytes());
+            curriculoCandidato.setSize(curriculo.getSize());
+            curriculoCandidato.setFileName(nomeDoArquivo);
+            curriculoCandidato.setFileType(curriculo.getContentType());
+            curriculoCandidato.setData(curriculo.getBytes());
             curriculoCandidato.setCandidato(candidato);
 
             CurriculoEntity save = curriculoRepository.save(curriculoCandidato);
@@ -68,25 +66,22 @@ public class CurriculoService {
                     ServletUriComponentsBuilder.fromCurrentContextPath()
                             .path("/download-curriculo/")
                             .path(save.getIdCurriculo().toString())
-                            .toUriString()
-            );
+                            .toUriString() );
+
             return curriculoDTO;
+
         } catch (IOException ex) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
-        }
+            throw new FileStorageException("Could not store file " + nomeDoArquivo + ". Please try again!", ex); }
     }
 
     @Transactional
     public ResponseEntity<Resource> downloadCurriculo(Integer idCandidato) {
         CurriculoEntity curriculoCandidato = curriculoRepository.getCurriculoByIdCandidato(idCandidato);
+
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(curriculoCandidato.getFileType()))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + curriculoCandidato.getFileName() + "\"")
                 .body(new ByteArrayResource(curriculoCandidato.getData()));
     }
-
-
-
-
 
 }

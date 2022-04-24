@@ -1,12 +1,8 @@
 package com.dbc.vemcv.controller.cadidato;
 
-
-
 import com.dbc.vemcv.dto.candidato.*;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
-import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
-import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.CandidatoService;
 import com.dbc.vemcv.service.DadosEscolaresService;
@@ -77,9 +73,10 @@ public class CandidatoController implements CandidatoAPI {
 
         CandidatoDTO candidatoDTO = candidatoService.create(candidatoCreateDTO);
 
-        DadosEscolaresDTO dadosEscolaresDTO = dadosEscolaresService.create(candidatoDTO.getIdCandidato(), dadosEscolaresCreateDTO);
+        dadosEscolaresService.create(candidatoDTO.getIdCandidato(), dadosEscolaresCreateDTO);
+        experienciasService.create(candidatoDTO.getIdCandidato(), experienciasCreateDTO);
 
-        ExperienciasDTO experienciasDTO = experienciasService.create(candidatoDTO.getIdCandidato(), experienciasCreateDTO);
+
 
 
         candidatoService.listCandidatosDadosExperiencias(candidatoDTO.getIdCandidato());

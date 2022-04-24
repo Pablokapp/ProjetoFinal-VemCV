@@ -1,14 +1,12 @@
 package com.dbc.vemcv.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -67,7 +65,7 @@ public class CandidatoEntity {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "candidatos")
-    private Set<VagaEntity> vagases;
+    private Set<VagaEntity> vagas;
 
     @JsonIgnore
     @OneToOne(mappedBy = "candidato", cascade = CascadeType.REMOVE)
