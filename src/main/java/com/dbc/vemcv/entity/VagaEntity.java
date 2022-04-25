@@ -18,37 +18,32 @@ public class VagaEntity {
     @Column(name = "id_vaga")
     private Integer id;
 
-    @JsonProperty("Titulo")
     @Column(name = "titulo")
     private String titulo;
 
-    @JsonProperty("Status")
     @Column(name = "status")
     private String status;
 
-    @JsonProperty("Responsavel")
     @Column(name = "responsavel")
     private String responsavel;
 
-    @JsonProperty("Estado")
     @Column(name = "estado")
     private String estado;
 
-    @JsonProperty("DataAbertura")
     @Column(name = "data_abertura")
     private LocalDate dataAbertura;
 
-    @JsonProperty("Cliente")
     @Column(name = "cliente")
     private String cliente;
 
-    @JsonProperty("Cidade")
     @Column(name = "cidade")
     private String cidade;
 
-    @JsonProperty("Analista")
     @Column(name = "analista")
     private String analista;
+
+    @Column(name = "pcd")
+    private Boolean pcd;
 
     @JsonIgnore
     @ManyToMany

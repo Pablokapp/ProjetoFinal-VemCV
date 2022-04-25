@@ -14,6 +14,7 @@ import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ public class CandidatoCompletoService {
     private final CandidatoService candidatoService;
     private final DadosEscolaresService dadosEscolaresService;
     private final ExperienciasService experienciasService;
+    private final CurriculoService curriculoService;
 
     private final ObjectMapper objectMapper;
 
@@ -69,7 +71,6 @@ public class CandidatoCompletoService {
     }
 
 
-    //todo atualizar as experiencias e dados escolares ao invés de apagar e criar?
     public CandidatoCompletoDTO update(Integer idCandidato, CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
 
@@ -86,10 +87,10 @@ public class CandidatoCompletoService {
         List<DadosEscolaresDTO> dadosEscolaresDTOList = new ArrayList<>();
         List<ExperienciasDTO> experienciasDTOList = new ArrayList<>();
         for(DadosEscolaresCreateDTO dadosEscolares: candidatoCompletoCreateDTO.getDadosEscolares()){
-            dadosEscolaresDTOList.add(dadosEscolaresService.create(candidatoAtualizado.getIdCandidato(),dadosEscolares));
+            dadosEscolaresDTOList.add(dadosEscolaresService.create(idCandidato,dadosEscolares));
         }
         for(ExperienciasCreateDTO experiencia:candidatoCompletoCreateDTO.getExperiencias()){
-            experienciasDTOList.add(experienciasService.create(candidatoAtualizado.getIdCandidato(),experiencia));
+            experienciasDTOList.add(experienciasService.create(idCandidato,experiencia));
         }
 
         CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(candidatoAtualizado,CandidatoCompletoDTO.class);

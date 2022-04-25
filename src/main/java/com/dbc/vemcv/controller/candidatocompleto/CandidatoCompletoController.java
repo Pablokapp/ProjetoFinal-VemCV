@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/candidato-completo")
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CandidatoCompletoController {
     private final CandidatoCompletoService candidatoCompletoService;
+
     @PostMapping
     public ResponseEntity<CandidatoCompletoDTO> create(@RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException {
         return ResponseEntity.ok(candidatoCompletoService.create(candidato));

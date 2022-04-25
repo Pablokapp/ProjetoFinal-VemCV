@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 
@@ -21,6 +22,13 @@ public class CandidatoDTO {
     @NotNull
     @ApiModelProperty("Nome completo do candidato")
     private String nome;
+
+    @NotBlank
+    @NotEmpty
+    @NotNull
+    @Email
+    @ApiModelProperty("Email do candidato")
+    private String email;
 
     @NotBlank
     @NotNull

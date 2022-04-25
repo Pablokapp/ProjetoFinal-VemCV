@@ -21,6 +21,9 @@ public class SimpleErrorDecode implements ErrorDecoder {
             if (response.status() == 400) {
                 return new RegraDeNegocioException(bodyString);
             }
+            if (response.status() == 401) {
+                return new RegraDeNegocioException("Não autorizado. Mensagem: "+bodyString);
+            }
             return new Exception("Generic error");
         } catch (IOException e) {
             e.printStackTrace();

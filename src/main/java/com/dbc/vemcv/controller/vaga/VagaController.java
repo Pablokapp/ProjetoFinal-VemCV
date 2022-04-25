@@ -1,12 +1,16 @@
 package com.dbc.vemcv.controller.vaga;
 
 
+import com.dbc.vemcv.dto.vagas.PaginaVagasCompleoReduzidaDTO;
 import com.dbc.vemcv.dto.vagas.VagaCompleoReduzidaDTO;
+import com.dbc.vemcv.service.VagaService;
+import com.dbc.vemcv.service.VagasCompleoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
@@ -22,43 +26,21 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 public class VagaController {
+    private final VagasCompleoService vagasCompleoService;
+    private final VagaService vagaService;
 
     @GetMapping("/get-vagas-compleo")
-    public ResponseEntity<List<VagaCompleoReduzidaDTO>> getVagasCompleo(){
-        return ResponseEntity.ok(Arrays.asList(
-                VagaCompleoReduzidaDTO.builder()
-                        .id(1)
-                        .titulo("titulo1")
-                        .status("status1")
-                        .responsavel("responsavel1")
-                        .estado("estado1")
-                        .dataAbertura(LocalDate.now().minusYears(1))
-                        .cliente("cliente1")
-                        .cidade("cidade1")
-                        .analista("analista1")
-                        .build(),
-                VagaCompleoReduzidaDTO.builder()
-                        .id(2)
-                        .titulo("titulo2")
-                        .status("status2")
-                        .responsavel("responsavel2")
-                        .estado("estado2")
-                        .dataAbertura(LocalDate.now().minusYears(1))
-                        .cliente("cliente2")
-                        .cidade("cidade2")
-                        .analista("analista2")
-                        .build(),
-                VagaCompleoReduzidaDTO.builder()
-                        .id(3)
-                        .titulo("titulo3")
-                        .status("status3")
-                        .responsavel("responsavel3")
-                        .estado("estado3")
-                        .dataAbertura(LocalDate.now().minusYears(1))
-                        .cliente("cliente3")
-                        .cidade("cidade3")
-                        .analista("analista3")
-                        .build()
-        ));
+    public ResponseEntity<PaginaVagasCompleoReduzidaDTO> getVagasCompleo(@RequestParam("pagina") Integer pagina, @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina){
+        return ResponseEntity.ok(vagasCompleoService.listar(pagina, quantidadePorPagina));
+    }
+
+    @GetMapping("/get-vagas-aberto")
+    public ResponseEntity<PaginaVagasCompleoReduzidaDTO> getVagasEmAberto(@RequestParam("pagina") Integer pagina, @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina){
+        return ResponseEntity.ok(vagaService.listarVagasEmAberto(pagina, quantidadePorPagina));
+    }
+
+    @GetMapping("/atualizar-vagas")
+    public void atualizarVagas(){
+        vagaService.atualizarVagas();
     }
 }

@@ -13,17 +13,17 @@ import java.util.List;
 @Builder
 public class VagasCompleoCompletaDTO {
     @JsonProperty("Ano_Mes_Dt_Abertura")
-    private String Ano_Mes_Dt_Abertura;
+    private String anoMesDtAbertura;
     @JsonProperty("Semana_Data_Abertura")
-    private Date Semana_Data_Abertura;
+    private Date semanaDataAbertura;
     @JsonProperty("Ano_Mes_Dt_Fechamento")
-    private String Ano_Mes_Dt_Fechamento;
+    private String anoMesDtFechamento;
     @JsonProperty("Semana_Data_Fechamento")
-    private Date Semana_Data_Fechamento;
+    private Date semanaDataFechamento;
     @JsonProperty("Ano_Mes_Dt_Cancelamento")
-    private String Ano_Mes_Dt_Cancelamento;
+    private String anoMesDtCancelamento;
     @JsonProperty("Semana_Data_Cancelamento")
-    private Date Semana_Data_Cancelamento;
+    private Date semanaDataCancelamento;
     @JsonProperty("id")
     private Integer id;
     @JsonProperty("Codigo")
