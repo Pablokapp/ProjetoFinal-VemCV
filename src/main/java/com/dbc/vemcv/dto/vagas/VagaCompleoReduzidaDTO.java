@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -18,4 +19,5 @@ public class VagaCompleoReduzidaDTO {
     private String cidade;
     private String analista;
     private Boolean pcd;
+    private LocalDateTime ultimaAtualizacao;
 }

@@ -1,10 +1,7 @@
 package com.dbc.vemcv.service;
 
 import com.dbc.vemcv.config.client.CompleoClient;
-import com.dbc.vemcv.dto.vagas.PaginaVagasCompleoCompletaDTO;
-import com.dbc.vemcv.dto.vagas.PaginaVagasCompleoReduzidaDTO;
-import com.dbc.vemcv.dto.vagas.VagaCompleoReduzidaDTO;
-import com.dbc.vemcv.dto.vagas.VagasCompleoCompletaDTO;
+import com.dbc.vemcv.dto.vagas.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +27,7 @@ public class VagasCompleoService {
         PaginaVagasCompleoCompletaDTO paginaCompleo = compleoClient.listar(pagina, quantidadePorPagina, false);
 
         List<VagaCompleoReduzidaDTO> vagasReduzidasDTO = paginaCompleo.getVagaGeralList().stream()
-                .filter(v->v.getDataAbertura().after(Date.from(LocalDate.now().minusDays(1).atStartOfDay(ZoneId.of("UTC-03:00")).toInstant())))//todo ZoneId.systemDefault() talvez
+//                .filter(v->v.getDataAbertura().after(Date.from(LocalDate.now().minusDays(1).atStartOfDay(ZoneId.of("UTC-03:00")).toInstant())))//todo ZoneId.systemDefault() talvez
                 .map(v -> {
                     log.info("Titulo da vaga buscada: " + v.getTitulo() + " | status: "+v.getStatus());
                     return this.mapVagaCompleo(v);
@@ -43,7 +41,7 @@ public class VagasCompleoService {
         PaginaVagasCompleoCompletaDTO paginaCompleo = compleoClient.listar(pagina, quantidadePorPagina, false);
 
         List<VagaCompleoReduzidaDTO> vagasReduzidasDTO = paginaCompleo.getVagaGeralList().stream()
-                .filter(v->v.getDataAbertura().after(Date.from(LocalDate.now().minusYears(1).atStartOfDay(ZoneId.of("UTC-03:00")).toInstant())))
+                .filter(v->v.getDataAbertura().after(Date.from(LocalDate.now().minusYears(1).atStartOfDay(ZoneId.of("UTC-03:00")).toInstant())))//todo deixar assim?
                 .map(v -> {
                     log.info("Titulo da vaga buscada: " + v.getTitulo() + " | status: "+v.getStatus());
                     return this.mapVagaCompleo(v);
@@ -59,7 +57,12 @@ public class VagasCompleoService {
         List<VagaCompleoReduzidaDTO> vagasReduzidasDTO = paginaCompleo.getVagaGeralList().stream()
                 .map(v -> {
                     log.info("Titulo da vaga buscada: " + v.getTitulo() + " | status: "+v.getStatus());
-                    return this.mapVagaCompleo(v);
+                    VagaCompleoReduzidaDTO vagaCompleoReduzidaDTO = this.mapVagaCompleo(v);
+                    vagaCompleoReduzidaDTO.setUltimaAtualizacao(v.getHistoricoMudancaStatus().stream()
+                            .map(HistoricoMudancaStatusVagaDTO::getData)
+                            .max(LocalDateTime::compareTo)
+                            .orElse(v.getDataAbertura().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));//todo substituir por data de abertura da vaga?
+                    return vagaCompleoReduzidaDTO;
                 })
                 .collect(Collectors.toList());
 
@@ -88,6 +91,7 @@ public class VagasCompleoService {
                 .cidade(vagaCompleta.getCidade())
                 .analista(vagaCompleta.getAnalista())
                 .pcd(vagaCompleta.getPcd())
+                .ultimaAtualizacao(vagaCompleta.getDataAbertura().toInstant().atZone(ZoneId.of("UTC-03:00")).toLocalDate().atStartOfDay())//seta data da ultima atualizacao para o dia de criacao
                 .build();
     }
 }

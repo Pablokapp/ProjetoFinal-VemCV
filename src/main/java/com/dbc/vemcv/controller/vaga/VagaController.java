@@ -2,24 +2,15 @@ package com.dbc.vemcv.controller.vaga;
 
 
 import com.dbc.vemcv.dto.vagas.PaginaVagasCompleoReduzidaDTO;
-import com.dbc.vemcv.dto.vagas.VagaCompleoReduzidaDTO;
+import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.VagaService;
 import com.dbc.vemcv.service.VagasCompleoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/vaga")
@@ -39,8 +30,18 @@ public class VagaController {
         return ResponseEntity.ok(vagaService.listarVagasEmAberto(pagina, quantidadePorPagina));
     }
 
-    @GetMapping("/atualizar-vagas")
-    public void atualizarVagas(){
-        vagaService.atualizarVagas();
+    @PostMapping("/vincular-candidato")
+    public void vincularCandidato(Integer idVaga, Integer idCandidato) throws RegraDeNegocioException {
+        vagaService.vincularCandidato(idVaga, idCandidato);
+    }
+
+    @GetMapping("/forcaratualizacao")
+    public void forcarAtualizacao() throws RegraDeNegocioException {
+        vagaService.atualizarTodasVagas();
+    }
+
+    @GetMapping("/data-ultima-atualizacao")
+    public ResponseEntity<LocalDateTime> getDataUltimaAtualizacao(){
+        return ResponseEntity.ok(vagaService.getDataUltimaAtualizacao());
     }
 }

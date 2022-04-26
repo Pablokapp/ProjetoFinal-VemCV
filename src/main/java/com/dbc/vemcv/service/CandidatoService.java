@@ -128,7 +128,7 @@ public class CandidatoService {
         }
     }
 
-    private CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException{
+    protected CandidatoEntity findById(Integer idCandidato) throws RegraDeNegocioException{
         return candidatoRepository.findById(idCandidato).orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
     }
 

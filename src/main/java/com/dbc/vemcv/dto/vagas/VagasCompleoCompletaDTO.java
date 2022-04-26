@@ -102,10 +102,10 @@ public class VagasCompleoCompletaDTO {
     private String vagaPrioridadeDescricao;
     @JsonProperty("CampoGenerico")
     private String campoGenerico;
-    /*@JsonProperty("HistoricoMudancaStatus")
-    private List<HistoricoMudancaStatusVagaDTO>
-    @JsonProperty("ListaContatos")
-    private List<ListaContatosDTO>*/
+    @JsonProperty("HistoricoMudancaStatus")
+    private List<HistoricoMudancaStatusVagaDTO> historicoMudancaStatus;
+    /*@JsonProperty("ListaContatos")
+    private List<ListaContatosDTO>
     @JsonProperty("Tags")
-    private List<String> tags;
+    private List<String> tags;*/
 }

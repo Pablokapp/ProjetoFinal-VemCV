@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -45,8 +46,11 @@ public class VagaEntity {
     @Column(name = "pcd")
     private Boolean pcd;
 
+    @Column(name = "ultima_atualizacao_local")//guarda a atualizacao local para controle
+    private LocalDateTime ultimaAtualizacao;
+
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(
             name = "candidato_vaga",
             joinColumns = @JoinColumn(name = "fk_vaga"),
