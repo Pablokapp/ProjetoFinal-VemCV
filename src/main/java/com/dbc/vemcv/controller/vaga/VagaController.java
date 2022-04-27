@@ -41,7 +41,7 @@ public class VagaController {
     }
 
     @GetMapping("/data-ultima-atualizacao")
-    public ResponseEntity<LocalDateTime> getDataUltimaAtualizacao(){
+    public ResponseEntity<LocalDateTime> getDataUltimaAtualizacao() throws RegraDeNegocioException {
         return ResponseEntity.ok(vagaService.getDataUltimaAtualizacao());
     }
 }

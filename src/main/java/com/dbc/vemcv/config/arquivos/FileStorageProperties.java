@@ -1,4 +1,4 @@
-package com.dbc.vemcv.config;
+package com.dbc.vemcv.config.arquivos;
 
 import lombok.Getter;
 import lombok.Setter;

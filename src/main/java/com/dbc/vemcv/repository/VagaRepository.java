@@ -14,7 +14,9 @@ import java.util.Optional;
 public interface VagaRepository extends JpaRepository<VagaEntity, Integer> {
     boolean existsById(Integer id);
 
-    @Query("select v from VAGA v where v.status = :status1 or v.status = :status2")
-    Page<VagaEntity> findByStatus1OrStatus2(String status1, String status2, Pageable pageable);
+    /*@Query("select v from VAGA v where v.status = :status1 or v.status = :status2")
+    Page<VagaEntity> findByStatus1OrStatus2(String status1, String status2, Pageable pageable);*/
+
+    Page<VagaEntity> findByStatusIn(List<String> status, Pageable pageable);
 
 }
