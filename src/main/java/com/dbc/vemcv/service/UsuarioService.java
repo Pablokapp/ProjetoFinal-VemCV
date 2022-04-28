@@ -4,7 +4,7 @@ package com.dbc.vemcv.service;
 import com.dbc.vemcv.dto.usuario.UsuarioCreateDTO;
 import com.dbc.vemcv.dto.usuario.UsuarioDTO;
 import com.dbc.vemcv.entity.UsuarioEntity;
-import com.dbc.vemcv.enums.Cargo;
+import com.dbc.vemcv.enums.Role;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.repository.CargoRepository;
 import com.dbc.vemcv.repository.UsuarioRepository;
@@ -32,7 +32,7 @@ public class UsuarioService {
 
 
 
-    public UsuarioDTO create(UsuarioCreateDTO usuarioCreateDTO, Cargo cargo) throws RegraDeNegocioException {
+    public UsuarioDTO create(UsuarioCreateDTO usuarioCreateDTO, Role role) throws RegraDeNegocioException {
         if (usuarioRepository.existsByEmail(usuarioCreateDTO.getEmail())) {
             throw new RegraDeNegocioException("Email já cadastrado");
         }
@@ -40,7 +40,7 @@ public class UsuarioService {
         entity.setSenha(new BCryptPasswordEncoder().encode(usuarioCreateDTO.getSenha()));
 
 
-        entity.setRole(cargoRepository.findById(cargo.getCargo()).orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado")));
+        entity.setRole(cargoRepository.findById(role.getRole()).orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado")));
 
 
         UsuarioEntity save = usuarioRepository.save(entity);
