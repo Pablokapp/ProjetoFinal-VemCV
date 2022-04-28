@@ -61,4 +61,26 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put("message", exception.getMessage());
         return new ResponseEntity<>(body, badRequest);
     }
+
+    @ExceptionHandler(MyFileNotFoundException.class)
+    public ResponseEntity<Object> handleException(MyFileNotFoundException exception,
+                                                  HttpServletRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        body.put("status", badRequest.value());
+        body.put("message", exception.getMessage());
+        return new ResponseEntity<>(body, badRequest);
+    }
+
+    @ExceptionHandler(FileStorageException.class)
+    public ResponseEntity<Object> handleException(FileStorageException exception,
+                                                  HttpServletRequest request) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", new Date());
+        final HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        body.put("status", badRequest.value());
+        body.put("message", exception.getMessage());
+        return new ResponseEntity<>(body, badRequest);
+    }
 }
