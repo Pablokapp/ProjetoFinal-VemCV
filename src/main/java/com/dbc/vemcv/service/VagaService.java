@@ -58,7 +58,7 @@ public class VagaService {
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
         if(vaga==null){//vaga nula, propaga excessão
             throw new RegraDeNegocioException("Vaga inexistente");
-        }else if(!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))&&!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){
+        }else if(vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))||vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){
             throw new RegraDeNegocioException("Vaga não está em andamento");
         }else if(vaga.getCandidatos()==null){//lista de candidatos nula, cria lista
             Set<CandidatoEntity> candidatos = new HashSet<>();
