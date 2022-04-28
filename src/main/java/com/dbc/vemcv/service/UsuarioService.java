@@ -40,7 +40,7 @@ public class UsuarioService {
         entity.setSenha(new BCryptPasswordEncoder().encode(usuarioCreateDTO.getSenha()));
 
 
-        entity.setRole(cargoRepository.findById(cargo.getCargo()).orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado")));
+        entity.setCargo(cargoRepository.findById(cargo.getCargo()).orElseThrow(() -> new RegraDeNegocioException("Cargo não encontrado")));
 
 
         UsuarioEntity save = usuarioRepository.save(entity);
