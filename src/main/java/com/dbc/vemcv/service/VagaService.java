@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -57,7 +56,7 @@ public class VagaService {
 
         VagaEntity vaga = this.findById(idVaga);
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
-        if(vaga==null){//vaga nula, propaga excessao
+        if(vaga==null){//vaga nula, propaga excessão
             throw new RegraDeNegocioException("Vaga inexistente");
         }else if(vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))||vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){
             throw new RegraDeNegocioException("Vaga não está em andamento");
@@ -73,7 +72,7 @@ public class VagaService {
         vagaRepository.save(vaga);
     }
 
-    @PostConstruct
+//    @PostConstruct
 //    @Scheduled(cron = "* * 4 * * *")
     public void atualizarTodasVagas() throws RegraDeNegocioException {
         this.verificarAcesso();

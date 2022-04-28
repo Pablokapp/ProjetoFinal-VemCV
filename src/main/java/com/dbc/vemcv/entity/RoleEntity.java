@@ -6,20 +6,19 @@ import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
-@Entity(name = "CARGO")
-public class CargoEntity implements Serializable, GrantedAuthority {
+@Entity(name = "ROLE")
+public class RoleEntity implements Serializable, GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_cargo")
-    @SequenceGenerator(name = "seq_cargo", sequenceName = "seq_cargo", allocationSize = 1)
-    @Column(name = "id_cargo")
-    private Integer idCargo;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
+    @SequenceGenerator(name = "seq_role", sequenceName = "seq_role", allocationSize = 1)
+    @Column(name = "seq_role")
+    private Integer idRole;
 
-    @Column(name = "nome_cargo")
+    @Column(name = "nome_role")
     private String nome;
 
     @Override
