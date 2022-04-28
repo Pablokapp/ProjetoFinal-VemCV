@@ -73,21 +73,11 @@ public class VagaService {
         vagaRepository.save(vaga);
     }
 
-    public void atualizarTodasVagas() throws RegraDeNegocioException {//todo falta um controle para cancelar atualizacao do servidor, assim forcando atualizar novamente ou algo assim
-        this.verificarAcesso();
-
-        serverPropertiesService.setStatusAtualizando();
-
-        this.atualizarTodasVagas2();
-
-        serverPropertiesService.setUltimaAtualizacao(LocalDateTime.now());
-    }
-
-//    @PostConstruct
+    @PostConstruct
 //    @Scheduled(cron = "* * 4 * * *")
     @Transactional
-    public void atualizarTodasVagas2() throws RegraDeNegocioException {
-
+    public void atualizarTodasVagas() throws RegraDeNegocioException {
+        serverPropertiesService.setStatusAtualizando();
 
         PaginaVagasCompleoReduzidaDTO paginaCompleo = vagasCompleoService.listar(1,1);
 
@@ -114,7 +104,7 @@ public class VagaService {
                 }
             }
         }
-
+        serverPropertiesService.setUltimaAtualizacao(LocalDateTime.now());
     }
 
     private VagaEntity findById(Integer idVaga){
