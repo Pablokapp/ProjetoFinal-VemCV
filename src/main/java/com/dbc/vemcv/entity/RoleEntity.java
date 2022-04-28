@@ -15,7 +15,7 @@ public class RoleEntity implements Serializable, GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_role")
     @SequenceGenerator(name = "seq_role", sequenceName = "seq_role", allocationSize = 1)
-    @Column(name = "seq_role")
+    @Column(name = "id_role")
     private Integer idRole;
 
     @Column(name = "nome_role")
