@@ -59,7 +59,7 @@ public class VagaService {
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
         if(vaga==null){//vaga nula, propaga excessao
             throw new RegraDeNegocioException("Vaga inexistente");
-        }else if(vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))||vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){
+        }else if(!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))&&!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){
             throw new RegraDeNegocioException("Vaga não está em andamento");
         }else if(vaga.getCandidatos()==null){//lista de candidatos nula, cria lista
             Set<CandidatoEntity> candidatos = new HashSet<>();
@@ -73,12 +73,21 @@ public class VagaService {
         vagaRepository.save(vaga);
     }
 
-    @PostConstruct
-//    @Scheduled(cron = "* * 4 * * *")
-    public void atualizarTodasVagas() throws RegraDeNegocioException {
+    public void atualizarTodasVagas() throws RegraDeNegocioException {//todo falta um controle para cancelar atualizacao do servidor, assim forcando atualizar novamente ou algo assim
         this.verificarAcesso();
 
         serverPropertiesService.setStatusAtualizando();
+
+        this.atualizarTodasVagas2();
+
+        serverPropertiesService.setUltimaAtualizacao(LocalDateTime.now());
+    }
+
+//    @PostConstruct
+//    @Scheduled(cron = "* * 4 * * *")
+    @Transactional
+    public void atualizarTodasVagas2() throws RegraDeNegocioException {
+
 
         PaginaVagasCompleoReduzidaDTO paginaCompleo = vagasCompleoService.listar(1,1);
 
@@ -105,7 +114,7 @@ public class VagaService {
                 }
             }
         }
-        serverPropertiesService.setUltimaAtualizacao(LocalDateTime.now());
+
     }
 
     private VagaEntity findById(Integer idVaga){

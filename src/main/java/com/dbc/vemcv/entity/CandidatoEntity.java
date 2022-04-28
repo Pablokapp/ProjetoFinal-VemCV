@@ -25,9 +25,6 @@ public class CandidatoEntity {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "email")
-    private String email;
-
     @Column(name = "cpf")
     private String cpf;
 
@@ -59,11 +56,11 @@ public class CandidatoEntity {
     private String senioridade;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "candidato")
+    @OneToMany(mappedBy = "candidato", cascade = CascadeType.REMOVE)
     private Set<DadosEscolaresEntity> dadosEscolares;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "candidato")
+    @OneToMany(mappedBy = "candidato", cascade = CascadeType.REMOVE)
     private Set<ExperienciasEntity> experiencias;
 
     @JsonIgnore

@@ -35,6 +35,7 @@ public class ServerPropertiesService {
         if(serverPropertiesRepository.existsById(1)){
             ServerProperties serverProperties = this.getServerProperties();
             serverProperties.setUltimaAtualizacao(dataAtualizacao);
+            serverProperties.setStatus(ServerStatus.ATUALIZADO);
             serverPropertiesRepository.save(serverProperties);
         }else{
             ServerProperties serverProperties = new ServerProperties(1,dataAtualizacao, ServerStatus.ATUALIZADO);

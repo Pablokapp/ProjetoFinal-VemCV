@@ -25,13 +25,6 @@ public class CandidatoDTO {
     private String nome;
 
     @NotBlank
-    @NotEmpty
-    @NotNull
-    @Email
-    @ApiModelProperty("Email do candidato")
-    private String email;
-
-    @NotBlank
     @NotNull
     @NotEmpty
     @Size(min = 11, max = 11, message = "O CPF deve conter exatamente 11 números")
@@ -55,9 +48,6 @@ public class CandidatoDTO {
     @Positive
     @ApiModelProperty("Número do endereço do candidato")
     private Integer numero;
-
-//    @ApiModelProperty("Complemento do endereço do candidato, pode ser nulo")
-//    private String complemento;
 
     @NotEmpty
     @ApiModelProperty("Bairro do endereço do candidato")
