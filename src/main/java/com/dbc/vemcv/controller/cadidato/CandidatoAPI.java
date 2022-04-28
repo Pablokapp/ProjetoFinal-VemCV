@@ -28,13 +28,13 @@ public interface CandidatoAPI {
     @ApiOperation("Lista os candidatos cadastrados ou apenas um, por id")
     ResponseEntity<List<CandidatoDTO>> list(@RequestParam(value = "idCandidato", required = false) Integer idCandidato) throws RegraDeNegocioException;
 
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "lista de candidatos com dados e experiencias"),
-            @ApiResponse(code = 400, message = "Sem permissão para acessar esse recurso"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    @ApiOperation("Lista todos os candidatos cadastrados com os dados completos ou apenas um, por id")
-    ResponseEntity<List<CandidatoDadosExperienciasDTO>> listCandidatosDadosExperiencias(@RequestParam(value = "idCandidato", required = false) Integer idCandidato) throws RegraDeNegocioException;
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "lista de candidatos com dados e experiencias"),
+//            @ApiResponse(code = 400, message = "Sem permissão para acessar esse recurso"),
+//            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
+//    })
+//    @ApiOperation("Lista todos os candidatos cadastrados com os dados completos ou apenas um, por id")
+//    ResponseEntity<List<CandidatoDadosExperienciasDTO>> listCandidatosDadosExperiencias(@RequestParam(value = "idCandidato", required = false) Integer idCandidato) throws RegraDeNegocioException;
 
 
 

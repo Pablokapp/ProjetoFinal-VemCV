@@ -10,6 +10,7 @@ import com.dbc.vemcv.repository.CandidatoRepository;
 import com.dbc.vemcv.repository.DadosEscolaresRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +24,10 @@ public class DadosEscolaresService {
     private final CandidatoRepository candidatoRepository;
     private final ObjectMapper objectMapper;
 
-    public List<DadosEscolaresDTO> list() {
+    public List<DadosEscolaresDTO> list(Integer idCandidato) {
+        if(!(idCandidato == null)) {
+            return findByIdCandidato(idCandidato);
+        }
         return dadosEscolaresRepository.findAll()
                 .stream()
                 .map(dadosEscolares -> objectMapper.convertValue(dadosEscolares, DadosEscolaresDTO.class))
@@ -34,19 +38,35 @@ public class DadosEscolaresService {
         DadosEscolaresEntity entity = objectMapper.convertValue(dadosEscolaresCreateDTO, DadosEscolaresEntity.class);
         CandidatoEntity candidato = candidatoRepository.findById(idCandidato). orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
         entity.setCandidato(candidato);
-        DadosEscolaresEntity save = dadosEscolaresRepository.save(entity);
-        return objectMapper.convertValue(save, DadosEscolaresDTO.class);
+        return objectMapper.convertValue(dadosEscolaresRepository.save(entity), DadosEscolaresDTO.class);
+    }
+
+    public List<DadosEscolaresDTO> create(CandidatoEntity candidatoEntity, List<DadosEscolaresCreateDTO> dadosEscolaresCreateDTOS) throws RegraDeNegocioException {
+        dadosEscolaresCreateDTOS.forEach(dadosEscolaresCreateDTO -> {
+            DadosEscolaresEntity entity = objectMapper.convertValue(dadosEscolaresCreateDTO, DadosEscolaresEntity.class);
+            entity.setCandidato(candidatoEntity);
+            dadosEscolaresRepository.save(entity);
+        });
+        return findByIdCandidato(candidatoEntity.getIdCandidato());
     }
 
     public DadosEscolaresDTO update(Integer idDadosEscolares, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         DadosEscolaresEntity entity = dadosEscolaresRepository.findById(idDadosEscolares).orElseThrow(() -> new RegraDeNegocioException("Dado escolar não encontrado"));
-        entity.setInstituicao(dadosEscolaresCreateDTO.getInstituicao());
-        entity.setDataInicio(dadosEscolaresCreateDTO.getDataInicio());
-        entity.setDataFim(dadosEscolaresCreateDTO.getDataFim());
-        entity.setDescricao(dadosEscolaresCreateDTO.getDescricao());
-        DadosEscolaresEntity update = dadosEscolaresRepository.save(entity);
-        return objectMapper.convertValue(update, DadosEscolaresDTO.class);
+        BeanUtils.copyProperties(dadosEscolaresCreateDTO, entity);
+        return objectMapper.convertValue(dadosEscolaresRepository.save(entity), DadosEscolaresDTO.class);
     }
+
+    public List<DadosEscolaresDTO> update(CandidatoEntity candidatoEntity, List<DadosEscolaresCreateDTO> dadosEscolaresCreateDTOS) throws RegraDeNegocioException {
+        candidatoEntity.getDadosEscolares().forEach(dadosEscolaresEntity -> {
+            try {
+                delete(dadosEscolaresEntity.getIdDadosEscolares());
+            } catch (RegraDeNegocioException e) {
+                e.printStackTrace();
+            }
+        });
+        return create(candidatoEntity, dadosEscolaresCreateDTOS);
+    }
+
 
     public void delete(Integer idDadosEscolares) throws RegraDeNegocioException {
         DadosEscolaresEntity dadosEscolares = dadosEscolaresRepository.findById(idDadosEscolares).orElseThrow(() -> new RegraDeNegocioException("Dado Escolar não encontrado"));

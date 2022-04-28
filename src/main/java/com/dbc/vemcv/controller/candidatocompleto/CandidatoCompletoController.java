@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/candidato-completo")
 @Validated
 @RequiredArgsConstructor
-public class CandidatoCompletoController {
+public class CandidatoCompletoController implements CandidatoCompletoAPI {
     private final CandidatoCompletoService candidatoCompletoService;
 
     @PostMapping

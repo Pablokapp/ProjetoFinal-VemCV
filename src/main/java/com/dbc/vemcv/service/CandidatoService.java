@@ -65,6 +65,10 @@ public class CandidatoService {
         return candidatoAtualizado;
     }
 
+
+
+
+
     public void delete(Integer idCandidato) throws RegraDeNegocioException {
         CandidatoEntity candidato = this.findById(idCandidato);
         candidatoRepository.delete(candidato);
