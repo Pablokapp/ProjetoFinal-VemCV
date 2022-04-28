@@ -47,6 +47,11 @@ public class CandidatoCompletoCreateDTO {
     @ApiModelProperty("Cidade do endereço do candidato")
     private String cidade;
 
+//    @NotEmpty
+    @Email
+    @ApiModelProperty("Email do candidato")
+    private String email;
+
     @NotEmpty
     @ApiModelProperty("Telefone de contato do candidato")
     private String telefone;

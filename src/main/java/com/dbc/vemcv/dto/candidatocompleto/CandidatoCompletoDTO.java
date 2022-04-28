@@ -29,6 +29,8 @@ public class CandidatoCompletoDTO{
     @ApiModelProperty("Cidade do endereço do candidato")
     private String cidade;
 
+    @ApiModelProperty("Email do candidato")
+    private String email;
     @ApiModelProperty("Telefone de contato do candidato")
     private String telefone;
     @ApiModelProperty("Cargo do candidato")

@@ -2,7 +2,7 @@ package com.dbc.vemcv.controller.usuario;
 
 import com.dbc.vemcv.dto.usuario.UsuarioCreateDTO;
 import com.dbc.vemcv.dto.usuario.UsuarioDTO;
-import com.dbc.vemcv.enums.Role;
+import com.dbc.vemcv.enums.Cargo;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.UsuarioService;
 import io.swagger.annotations.ApiOperation;
@@ -30,8 +30,8 @@ public class UsuarioController {
     })
     @ApiOperation("Cria um usuário cadastrador")
     @PostMapping("/create-cadastrador")
-    public UsuarioDTO create(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @RequestParam Role role) throws RegraDeNegocioException {
-        return usuarioService.create(usuarioCreateDTO, role);
+    public UsuarioDTO create(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @RequestParam Cargo cargo) throws RegraDeNegocioException {
+        return usuarioService.create(usuarioCreateDTO, cargo);
     }
 
     @ApiResponses(value = {

@@ -25,6 +25,9 @@ public class CandidatoEntity {
     @Column(name = "nome")
     private String nome;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "cpf")
     private String cpf;
 
