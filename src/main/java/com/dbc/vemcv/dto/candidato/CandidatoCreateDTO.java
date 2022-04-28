@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class CandidatoCreateDTO {
     @NotEmpty
     @Size(min = 11, max = 11, message = "O CPF deve conter exatamente 11 números")
     @Pattern(regexp = "^[0-9]+$", message = "O CPF deve conter apenas números")
+//    @CPF
     @ApiModelProperty("CPF do candidato, deve conter 11 números")
     private String cpf;
 

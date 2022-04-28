@@ -19,7 +19,7 @@ public class VagaController {
     private final VagaService vagaService;
 
     @GetMapping("/buscar-vagas-aberto")
-    public ResponseEntity<PaginaVagasCompleoReduzidaDTO> buscarVagasEmAberto(@RequestParam("pagina") Integer pagina, @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina){
+    public ResponseEntity<PaginaVagasCompleoReduzidaDTO> buscarVagasEmAberto(@RequestParam("pagina") Integer pagina, @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina) throws RegraDeNegocioException {
         return ResponseEntity.ok(vagaService.listarVagasEmAberto(pagina, quantidadePorPagina));
     }
 

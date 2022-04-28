@@ -6,18 +6,12 @@ import com.dbc.vemcv.dto.candidato.PaginaCandidatoDTO;
 import com.dbc.vemcv.dto.candidatocompleto.CandidatoCompletoCreateDTO;
 import com.dbc.vemcv.dto.candidatocompleto.CandidatoCompletoDTO;
 import com.dbc.vemcv.dto.candidatocompleto.PaginaCandidatoCompletoDTO;
-import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
-import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
-import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
-import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,12 +59,15 @@ public class CandidatoCompletoService {
         CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoDTO,CandidatoEntity.class);
 
         if(idCandidato != null){
+            candidatoEntity = objectMapper.convertValue((candidatoService.update(idCandidato,candidatoCreateDTO)), CandidatoEntity.class);
+            candidatoCompletoDTO.setIdCandidato(candidatoEntity.getIdCandidato());
             candidatoCompletoDTO.setDadosEscolares(dadosEscolaresService.update(candidatoEntity, candidatoCompletoCreateDTO.getDadosEscolares()));
             candidatoCompletoDTO.setExperiencias(experienciasService.update(candidatoEntity, candidatoCompletoCreateDTO.getExperiencias()));
             return candidatoCompletoDTO;
         }
         //saves
         candidatoEntity = objectMapper.convertValue((candidatoService.create(candidatoCreateDTO)), CandidatoEntity.class);
+        candidatoCompletoDTO.setIdCandidato(candidatoEntity.getIdCandidato());
         candidatoCompletoDTO.setDadosEscolares(dadosEscolaresService.create(candidatoEntity, candidatoCompletoCreateDTO.getDadosEscolares()));
         candidatoCompletoDTO.setExperiencias(experienciasService.create(candidatoEntity, candidatoCompletoCreateDTO.getExperiencias()));
         return candidatoCompletoDTO;

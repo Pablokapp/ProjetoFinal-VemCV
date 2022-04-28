@@ -30,11 +30,13 @@ public class VagaService {
 
     private final ObjectMapper objectMapper;
     private static final Integer QUANTIDADE_POR_PAGINA = 100;
+    private static final List<String> ABERTAS = Arrays.asList("Em Andamento", "Aberta");
 
-    public PaginaVagasCompleoReduzidaDTO listarVagasEmAberto(Integer pagina, Integer quantidadePorPagina){
+    public PaginaVagasCompleoReduzidaDTO listarVagasEmAberto(Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
+        this.verificarAcesso();
+
         Pageable pageable = PageRequest.of(pagina, quantidadePorPagina);
-//        Page<VagaEntity> vagasPaginadas = vagaRepository.findByStatus1OrStatus2("Em Andamento", "Aberto", pageable);
-        Page<VagaEntity> vagasPaginadas = vagaRepository.findByStatusIn(Arrays.asList("Em Andamento", "Aberto"), pageable);
+        Page<VagaEntity> vagasPaginadas = vagaRepository.findByStatusIn(ABERTAS, pageable);
 
         List<VagaEntity> vagas = new ArrayList<>(vagasPaginadas.stream().collect(Collectors.toList()));
 
@@ -57,6 +59,8 @@ public class VagaService {
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
         if(vaga==null){//vaga nula, propaga excessao
             throw new RegraDeNegocioException("Vaga inexistente");
+        }else if(vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))||vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){
+            throw new RegraDeNegocioException("Vaga não está em andamento");
         }else if(vaga.getCandidatos()==null){//lista de candidatos nula, cria lista
             Set<CandidatoEntity> candidatos = new HashSet<>();
             candidatos.add(candidato);
@@ -73,7 +77,9 @@ public class VagaService {
 //    @Scheduled(cron = "* * 4 * * *")
     public void atualizarTodasVagas() throws RegraDeNegocioException {
         this.verificarAcesso();
+
         serverPropertiesService.setStatusAtualizando();
+
         PaginaVagasCompleoReduzidaDTO paginaCompleo = vagasCompleoService.listar(1,1);
 
         for(int paginaAtual=1; paginaAtual*QUANTIDADE_POR_PAGINA < paginaCompleo.getTotal(); paginaAtual++){

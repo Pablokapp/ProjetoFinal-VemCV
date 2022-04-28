@@ -1,4 +1,4 @@
-package com.dbc.vemcv.controller.dadosescolares;
+package com.dbc.vemcv.controller.vaga.dadosescolares;
 
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
