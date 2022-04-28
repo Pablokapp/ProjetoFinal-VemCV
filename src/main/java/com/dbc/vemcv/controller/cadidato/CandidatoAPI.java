@@ -2,7 +2,6 @@ package com.dbc.vemcv.controller.cadidato;
 
 import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoDTO;
-import com.dbc.vemcv.dto.candidato.CandidatoDadosExperienciasDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +18,6 @@ import java.util.List;
 @Validated
 public interface CandidatoAPI {
 
-
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "lista de candidatos"),
             @ApiResponse(code = 400, message = "Sem permissão para acessar esse recurso"),
@@ -27,16 +25,6 @@ public interface CandidatoAPI {
     })
     @ApiOperation("Lista os candidatos cadastrados ou apenas um, por id")
     ResponseEntity<List<CandidatoDTO>> list(@RequestParam(value = "idCandidato", required = false) Integer idCandidato) throws RegraDeNegocioException;
-
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "lista de candidatos com dados e experiencias"),
-//            @ApiResponse(code = 400, message = "Sem permissão para acessar esse recurso"),
-//            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-//    })
-//    @ApiOperation("Lista todos os candidatos cadastrados com os dados completos ou apenas um, por id")
-//    ResponseEntity<List<CandidatoDadosExperienciasDTO>> listCandidatosDadosExperiencias(@RequestParam(value = "idCandidato", required = false) Integer idCandidato) throws RegraDeNegocioException;
-
-
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Candidato criado"),
@@ -46,8 +34,6 @@ public interface CandidatoAPI {
     @ApiOperation("Cria um candidato")
     ResponseEntity<CandidatoDTO> create(@RequestBody @Valid CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException;
 
-
-
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Candidato atualizado"),
             @ApiResponse(code = 400, message = "Dados inconsistentes ou candidato não encontrado"),
@@ -55,7 +41,6 @@ public interface CandidatoAPI {
     })
     @ApiOperation("Atualiza um candidato")
     ResponseEntity<CandidatoDTO> update(@RequestParam Integer idCandidato, @RequestBody @Valid CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException;
-
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Candidato deletado"),

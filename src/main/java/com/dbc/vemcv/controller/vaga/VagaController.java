@@ -1,10 +1,8 @@
 package com.dbc.vemcv.controller.vaga;
 
-
 import com.dbc.vemcv.dto.vagas.PaginaVagasCompleoReduzidaDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.VagaService;
-import com.dbc.vemcv.service.VagasCompleoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,16 +15,11 @@ import java.time.LocalDateTime;
 @Validated
 @RequiredArgsConstructor
 public class VagaController {
-    private final VagasCompleoService vagasCompleoService;
+
     private final VagaService vagaService;
 
-    @GetMapping("/get-vagas-compleo")
-    public ResponseEntity<PaginaVagasCompleoReduzidaDTO> getVagasCompleo(@RequestParam("pagina") Integer pagina, @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina){
-        return ResponseEntity.ok(vagasCompleoService.listar(pagina, quantidadePorPagina));
-    }
-
-    @GetMapping("/get-vagas-aberto")
-    public ResponseEntity<PaginaVagasCompleoReduzidaDTO> getVagasEmAberto(@RequestParam("pagina") Integer pagina, @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina){
+    @GetMapping("/buscar-vagas-aberto")
+    public ResponseEntity<PaginaVagasCompleoReduzidaDTO> buscarVagasEmAberto(@RequestParam("pagina") Integer pagina, @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina){
         return ResponseEntity.ok(vagaService.listarVagasEmAberto(pagina, quantidadePorPagina));
     }
 
@@ -35,7 +28,7 @@ public class VagaController {
         vagaService.vincularCandidato(idVaga, idCandidato);
     }
 
-    @GetMapping("/forcaratualizacao")
+    @GetMapping("/atualizar")
     public void forcarAtualizacao() throws RegraDeNegocioException {
         vagaService.atualizarTodasVagas();
     }
@@ -44,4 +37,5 @@ public class VagaController {
     public ResponseEntity<LocalDateTime> getDataUltimaAtualizacao() throws RegraDeNegocioException {
         return ResponseEntity.ok(vagaService.getDataUltimaAtualizacao());
     }
+
 }

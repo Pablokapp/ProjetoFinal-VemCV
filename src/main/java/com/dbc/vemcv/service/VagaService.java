@@ -1,15 +1,11 @@
 package com.dbc.vemcv.service;
 
-
-
 import com.dbc.vemcv.dto.vagas.PaginaVagasCompleoReduzidaDTO;
 import com.dbc.vemcv.dto.vagas.VagaCompleoReduzidaDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.entity.VagaEntity;
 import com.dbc.vemcv.enums.ServerStatus;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
-import com.dbc.vemcv.model.ServerProperties;
-import com.dbc.vemcv.repository.ServerPropertiesRepository;
 import com.dbc.vemcv.repository.VagaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -35,14 +31,12 @@ public class VagaService {
     private final ObjectMapper objectMapper;
     private static final Integer QUANTIDADE_POR_PAGINA = 100;
 
-
     public PaginaVagasCompleoReduzidaDTO listarVagasEmAberto(Integer pagina, Integer quantidadePorPagina){
         Pageable pageable = PageRequest.of(pagina, quantidadePorPagina);
 //        Page<VagaEntity> vagasPaginadas = vagaRepository.findByStatus1OrStatus2("Em Andamento", "Aberto", pageable);
         Page<VagaEntity> vagasPaginadas = vagaRepository.findByStatusIn(Arrays.asList("Em Andamento", "Aberto"), pageable);
 
         List<VagaEntity> vagas = new ArrayList<>(vagasPaginadas.stream().collect(Collectors.toList()));
-
 
         return PaginaVagasCompleoReduzidaDTO.builder()
                 .vagas(vagas.stream()
@@ -81,7 +75,6 @@ public class VagaService {
         this.verificarAcesso();
         serverPropertiesService.setStatusAtualizando();
         PaginaVagasCompleoReduzidaDTO paginaCompleo = vagasCompleoService.listar(1,1);
-
 
         for(int paginaAtual=1; paginaAtual*QUANTIDADE_POR_PAGINA < paginaCompleo.getTotal(); paginaAtual++){
             paginaCompleo = vagasCompleoService.listarAlteracoes(paginaAtual,QUANTIDADE_POR_PAGINA);

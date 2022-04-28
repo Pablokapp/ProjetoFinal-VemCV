@@ -54,14 +54,11 @@ public class CandidatoCompletoService {
         return candidatoCompletoCreateDTOToCandidatoCompletoDTO(null, candidatoCompletoCreateDTO);
     }
 
-
     public CandidatoCompletoDTO update(Integer idCandidato, CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
         return candidatoCompletoCreateDTOToCandidatoCompletoDTO(idCandidato, candidatoCompletoCreateDTO);
     }
 
-
-
-    private CandidatoCompletoDTO candidatoCompletoCreateDTOToCandidatoCompletoDTO(Integer idCandidato , CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
+    private CandidatoCompletoDTO candidatoCompletoCreateDTOToCandidatoCompletoDTO(Integer idCandidato, CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
         CandidatoDTO candidatoDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoDTO.class);
         CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(candidatoDTO,CandidatoCompletoDTO.class);;
@@ -78,5 +75,9 @@ public class CandidatoCompletoService {
         candidatoCompletoDTO.setExperiencias(experienciasService.create(candidatoEntity, candidatoCompletoCreateDTO.getExperiencias()));
         return candidatoCompletoDTO;
     }
+
+
+
+
 
     }

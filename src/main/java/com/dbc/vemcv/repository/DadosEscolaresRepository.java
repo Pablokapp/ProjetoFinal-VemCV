@@ -14,4 +14,5 @@ public interface DadosEscolaresRepository extends JpaRepository<DadosEscolaresEn
             "inner join de.candidato c " +
             "where c.idCandidato = :idCandidato ")
     List<DadosEscolaresEntity> findByIdCandidato(Integer idCandidato);
+
 }
