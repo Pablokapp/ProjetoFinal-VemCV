@@ -30,5 +30,6 @@ public class VagaCompleoReduzidaDTO {
     private String analista;
     @ApiModelProperty("Vaga para PCD?")
     private Boolean pcd;
+    @ApiModelProperty("Última atualização recebida no sistema para a vaga")
     private LocalDateTime ultimaAtualizacao;
 }
