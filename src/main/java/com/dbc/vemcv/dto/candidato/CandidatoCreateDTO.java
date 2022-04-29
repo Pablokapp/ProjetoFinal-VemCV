@@ -19,12 +19,12 @@ public class CandidatoCreateDTO {
     @ApiModelProperty("Nome completo do candidato")
     private String nome;
 
-    @NotBlank
-    @NotNull
+//    @NotBlank
+//    @NotNull
     @NotEmpty
-    @Size(min = 11, max = 11, message = "O CPF deve conter exatamente 11 números")
-    @Pattern(regexp = "^[0-9]+$", message = "O CPF deve conter apenas números")
-//    @CPF
+//    @Size(min = 11, max = 11, message = "O CPF deve conter exatamente 11 números")
+//    @Pattern(regexp = "^[0-9]+$", message = "O CPF deve conter apenas números")
+    @CPF
     @ApiModelProperty("CPF do candidato, deve conter 11 números")
     private String cpf;
 

@@ -65,7 +65,9 @@ public class VagaService {
             Set<CandidatoEntity> candidatos = new HashSet<>();
             candidatos.add(candidato);
             vaga.setCandidatos(candidatos);
-        }else{//lista existente, adiciona candidato
+        }else if(vaga.getCandidatos().contains(candidato)){
+            throw new RegraDeNegocioException("Candidato já vinculado à vaga");
+        } else{//lista existente, adiciona candidato
             Set<CandidatoEntity> candidatos = vaga.getCandidatos();
             candidatos.add(candidato);
             vaga.setCandidatos(candidatos);
