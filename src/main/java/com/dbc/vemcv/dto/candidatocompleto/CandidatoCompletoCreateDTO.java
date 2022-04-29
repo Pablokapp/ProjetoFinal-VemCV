@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
 
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -59,9 +60,11 @@ public class CandidatoCompletoCreateDTO {
     @ApiModelProperty("Senioridade do candidato")
     private String senioridade;
 
+    @Valid
     @ApiModelProperty("Dados Escolares do candidato")
     private List<DadosEscolaresCreateDTO> dadosEscolares;
 
+    @Valid
     @ApiModelProperty("Experiências do candidato")
     private List<ExperienciasCreateDTO> experiencias;
 
