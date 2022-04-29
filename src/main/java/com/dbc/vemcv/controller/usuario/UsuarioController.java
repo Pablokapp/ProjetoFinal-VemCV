@@ -18,28 +18,16 @@ import javax.validation.Valid;
 @RequestMapping("/user")
 @Validated
 @RequiredArgsConstructor
-public class UsuarioController {
+public class UsuarioController implements UsuarioAPI{
 
 
     private final UsuarioService usuarioService;
 
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Cadastrador criado"),
-            @ApiResponse(code = 400, message = "Dados inconsistentes"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    @ApiOperation("Cria um usuário cadastrador")
     @PostMapping("/create-cadastrador")
     public UsuarioDTO create(@RequestBody @Valid UsuarioCreateDTO usuarioCreateDTO, @RequestParam Cargo cargo) throws RegraDeNegocioException {
         return usuarioService.create(usuarioCreateDTO, cargo);
     }
 
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Recupera cadastrador"),
-            @ApiResponse(code = 400, message = "Você não tem permissão para acessar esse recurso"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    @ApiOperation("Recupera o usuário")
     @GetMapping
     public UsuarioDTO retrieveUser(){
         return usuarioService.retrieveUser();

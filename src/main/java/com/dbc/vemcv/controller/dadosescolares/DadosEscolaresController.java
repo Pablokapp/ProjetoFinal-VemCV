@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,12 +26,12 @@ public class DadosEscolaresController implements DadosEscolaresAPI {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<DadosEscolaresDTO> create(@RequestParam("id") Integer idCandidato, @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
+    public ResponseEntity<DadosEscolaresDTO> create(@RequestParam("id") Integer idCandidato, @Valid @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         return ResponseEntity.ok(dadosEscolaresService.create(idCandidato, dadosEscolaresCreateDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<DadosEscolaresDTO> update(@RequestParam("id") Integer idCandidato, @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
+    public ResponseEntity<DadosEscolaresDTO> update(@RequestParam("id") Integer idCandidato, @Valid @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         return ResponseEntity.ok(dadosEscolaresService.update(idCandidato, dadosEscolaresCreateDTO));
     }
 

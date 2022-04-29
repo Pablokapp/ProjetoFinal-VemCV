@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api
 @Validated
 public interface CandidatoCompletoAPI {
@@ -23,7 +25,7 @@ public interface CandidatoCompletoAPI {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     @ApiOperation("Cria um candidato completo")
-    ResponseEntity<CandidatoCompletoDTO> create(@RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException;
+    ResponseEntity<CandidatoCompletoDTO> create(@Valid @RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException;
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Lista os candidatos completos por pagina"),
@@ -42,7 +44,7 @@ public interface CandidatoCompletoAPI {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     @ApiOperation("Atualiza um candidato completo")
-    ResponseEntity<CandidatoCompletoDTO> update(@RequestParam(value = "id-candidato") Integer idCandidato, @RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException;
+    ResponseEntity<CandidatoCompletoDTO> update(@RequestParam(value = "id-candidato") Integer idCandidato, @Valid @RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException;
 
 
 

@@ -75,7 +75,7 @@ public class VagaService {
         vagaRepository.save(vaga);
     }
 
-    @PostConstruct
+//    @PostConstruct
 //    @Scheduled(cron = "* * 4 * * *")
     @Transactional
     public void atualizarTodasVagas() throws RegraDeNegocioException {

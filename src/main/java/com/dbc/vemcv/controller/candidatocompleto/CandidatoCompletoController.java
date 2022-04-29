@@ -11,6 +11,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/candidato-completo")
 @Validated
@@ -19,7 +21,7 @@ public class CandidatoCompletoController implements CandidatoCompletoAPI {
     private final CandidatoCompletoService candidatoCompletoService;
 
     @PostMapping
-    public ResponseEntity<CandidatoCompletoDTO> create(@RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException {
+    public ResponseEntity<CandidatoCompletoDTO> create(@Valid @RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException {
         return ResponseEntity.ok(candidatoCompletoService.create(candidato));
     }
 
@@ -31,7 +33,7 @@ public class CandidatoCompletoController implements CandidatoCompletoAPI {
     }
 
     @PutMapping
-    public ResponseEntity<CandidatoCompletoDTO> update(@RequestParam(value = "id-candidato") Integer idCandidato, @RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException {
+    public ResponseEntity<CandidatoCompletoDTO> update(@RequestParam(value = "id-candidato") Integer idCandidato, @Valid @RequestBody CandidatoCompletoCreateDTO candidato) throws RegraDeNegocioException {
         return ResponseEntity.ok(candidatoCompletoService.update(idCandidato, candidato));
     }
 }

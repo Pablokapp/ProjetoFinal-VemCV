@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api
@@ -31,7 +32,7 @@ public interface DadosEscolaresAPI {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     @ApiOperation("Cria dados escolares para um id")
-    ResponseEntity<DadosEscolaresDTO> create(@RequestParam("id") Integer idCandidato, @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException;
+    ResponseEntity<DadosEscolaresDTO> create(@RequestParam("id") Integer idCandidato, @Valid @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException;
 
 
     @ApiResponses(value = {
@@ -40,7 +41,7 @@ public interface DadosEscolaresAPI {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     @ApiOperation("Atualiza dados escolares para um id")
-    ResponseEntity<DadosEscolaresDTO> update(@RequestParam("id") Integer idCandidato, @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException;
+    ResponseEntity<DadosEscolaresDTO> update(@RequestParam("id") Integer idCandidato, @Valid @RequestBody DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException;
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Dados escolares deletados"),
