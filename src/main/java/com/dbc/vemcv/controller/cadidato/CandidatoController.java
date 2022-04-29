@@ -53,4 +53,6 @@ public class CandidatoController implements CandidatoAPI {
         return ResponseEntity.ok(candidatoService.listPaginado(idCandidato,pagina,quantidadePorPagina));
     }
 
+//    @GetMapping("/get-candidato")
+
 }

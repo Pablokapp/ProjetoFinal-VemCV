@@ -2,8 +2,7 @@ package com.dbc.vemcv.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +13,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity(name = "VAGA")
+@AllArgsConstructor
+@NoArgsConstructor
 public class VagaEntity {
     @Id
     @Column(name = "id_vaga")

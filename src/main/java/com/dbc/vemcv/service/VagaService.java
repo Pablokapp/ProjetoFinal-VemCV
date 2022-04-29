@@ -10,11 +10,11 @@ import com.dbc.vemcv.repository.VagaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -70,29 +70,37 @@ public class VagaService {
         } else{//lista existente, adiciona candidato
             Set<CandidatoEntity> candidatos = vaga.getCandidatos();
             candidatos.add(candidato);
-            vaga.setCandidatos(candidatos);
+//            vaga.setCandidatos(candidatos);
         }
         vagaRepository.save(vaga);
     }
 
+
+
 //    @PostConstruct
-//    @Scheduled(cron = "* * 4 * * *")
-    @Transactional
+    @Scheduled(cron = "* * 4 * * *")
     public void atualizarTodasVagas() throws RegraDeNegocioException {
+        this.verificarAcesso();
+
         serverPropertiesService.setStatusAtualizando();
 
         PaginaVagasCompleoReduzidaDTO paginaCompleo = vagasCompleoService.listar(1,1);
+
+        //busca vagas locais em uma consulta só
+        Map<Integer,VagaEntity> vagaEntityList = vagaRepository.findAll().stream().collect(Collectors.toMap(VagaEntity::getId,v->v));
+        VagaEntity vagaLocal;
 
         for(int paginaAtual=1; paginaAtual*QUANTIDADE_POR_PAGINA < paginaCompleo.getTotal(); paginaAtual++){
             paginaCompleo = vagasCompleoService.listarAlteracoes(paginaAtual,QUANTIDADE_POR_PAGINA);
 
             for(VagaCompleoReduzidaDTO vaga: paginaCompleo.getVagas()){
 
-                VagaEntity vagaLocal = this.findById(vaga.getId());//todo testar uma consulta só
+                vagaLocal = vagaEntityList.getOrDefault(vaga.getId(), null);//this.findById(vaga.getId());//todo testar uma consulta só
+
                 if(vagaLocal==null){
                     log.info("salvando nova vaga de id: "+vaga.getId()+
                             "\ndata: "+vaga.getUltimaAtualizacao());
-                    vagaRepository.save(objectMapper.convertValue(vaga,VagaEntity.class));
+                    this.save(objectMapper.convertValue(vaga,VagaEntity.class));
                 }else if(vaga.getUltimaAtualizacao().isAfter(vagaLocal.getUltimaAtualizacao())){
                     log.info("salvando atualizacao na vaga de id: "+vaga.getId()+
                             "datas: "+vaga.getUltimaAtualizacao()+" || "+vagaLocal.getUltimaAtualizacao());
@@ -100,13 +108,17 @@ public class VagaService {
                     VagaEntity vagaExterna = objectMapper.convertValue(vaga, VagaEntity.class);
                     Set<CandidatoEntity> candidatos = vagaLocal.getCandidatos();
                     vagaExterna.setCandidatos(candidatos);
-                    vagaRepository.save(vagaExterna);
+                    this.save(vagaExterna);
                 }else{
                     log.info("sem atualizações na vaga de id: "+vaga.getId());
                 }
             }
         }
         serverPropertiesService.setUltimaAtualizacao(LocalDateTime.now());
+    }
+
+    private void save(VagaEntity vaga){
+        vagaRepository.save(vaga);
     }
 
     private VagaEntity findById(Integer idVaga){
@@ -118,10 +130,18 @@ public class VagaService {
         return serverPropertiesService.getUltimaAtualizacao();
     }
 
-    private void verificarAcesso() throws RegraDeNegocioException {
+    public void verificarAcesso() throws RegraDeNegocioException {
         if(serverPropertiesService.getServerStatus()==ServerStatus.ATUALIZANDO){
             throw new RegraDeNegocioException("Servidor atualizando, não é possível realizar esta operação");
         }
+    }
+
+    @Transactional
+    public List<Integer> listarCandidatosPorVaga(Integer idVaga) throws RegraDeNegocioException {
+        return vagaRepository.findById(idVaga).orElseThrow(()->new RegraDeNegocioException("Vaga não encontrada"))
+                .getCandidatos().stream()
+                .map(CandidatoEntity::getIdCandidato)
+                .collect(Collectors.toList());
     }
 
 }

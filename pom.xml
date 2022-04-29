@@ -73,6 +73,12 @@
             <version>3.0.0</version>
         </dependency>
 
+        <dependency><!--junit tests-->
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
         <dependency><!--feign-->
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>

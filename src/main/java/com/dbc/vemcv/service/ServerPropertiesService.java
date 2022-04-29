@@ -50,6 +50,7 @@ public class ServerPropertiesService {
     public void setStatusAtualizando() throws RegraDeNegocioException {
         ServerProperties serverProperties = this.getServerProperties();
         serverProperties.setStatus(ServerStatus.ATUALIZANDO);
+        serverPropertiesRepository.save(serverProperties);
     }
 
     private ServerProperties getServerProperties() throws RegraDeNegocioException {
