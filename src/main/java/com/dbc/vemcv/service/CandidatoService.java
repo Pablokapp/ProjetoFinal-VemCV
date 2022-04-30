@@ -68,37 +68,6 @@ public class CandidatoService {
         candidatoRepository.delete(candidato);
     }
 
-//    public List<CandidatoDadosExperienciasDTO> listCandidatosDadosExperiencias(Integer idCandidato) throws RegraDeNegocioException {
-//        List<CandidatoDadosExperienciasDTO> candidatoById = new ArrayList<>();
-//        if(idCandidato == null) {
-//            return candidatoRepository.findAll()
-//                    .stream()
-//                    .map(this::setCandidatoDadosExperienciasDTO)
-//                    .collect(Collectors.toList());
-//        }
-//        CandidatoEntity candidatoEntity = this.findById(idCandidato);
-//        candidatoById.add(setCandidatoDadosExperienciasDTO(candidatoEntity));
-//        return candidatoById;
-//    }
-//
-//    private CandidatoDadosExperienciasDTO setCandidatoDadosExperienciasDTO(CandidatoEntity candidato) {
-//        CandidatoDadosExperienciasDTO candidatoDadosExperienciasDTO = new CandidatoDadosExperienciasDTO();
-//        candidatoDadosExperienciasDTO.setCandidato(objectMapper.convertValue(candidato, CandidatoDTO.class));
-//
-//        candidatoDadosExperienciasDTO.setDadosEscolares(candidato.getDadosEscolares()==null?new ArrayList<>():
-//                candidato.getDadosEscolares()
-//                        .stream()
-//                        .map(dadoEscolar -> objectMapper.convertValue(dadoEscolar, DadosEscolaresDTO.class))
-//                        .collect(Collectors.toList())
-//        );
-//        candidatoDadosExperienciasDTO.setExperiencias(candidato.getExperiencias()==null?new ArrayList<>():
-//                candidato.getExperiencias()
-//                        .stream()
-//                        .map(experiencia -> objectMapper.convertValue(experiencia, ExperienciasDTO.class))
-//                        .collect(Collectors.toList())
-//        );
-//        return candidatoDadosExperienciasDTO;
-//    }
 
     public PaginaCandidatoDTO listPaginado(Integer idCandidato, Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
         List<CandidatoDTO>  candidatoByID = new ArrayList<>();

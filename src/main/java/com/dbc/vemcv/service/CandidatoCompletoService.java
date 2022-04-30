@@ -30,54 +30,6 @@ public class CandidatoCompletoService {
 
     private final ObjectMapper objectMapper;
 
-
-    /*public PaginaCandidatoCompletoDTO listPaginado(Integer idCandidato, Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
-        PaginaCandidatoDTO paginaCandidatoDTO = candidatoService.listPaginado(idCandidato, pagina, quantidadePorPagina);
-        List<CandidatoCompletoDTO> candidatoCompletoDTOList = paginaCandidatoDTO.getCandidatos().stream()
-                .map(c->{
-                    CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(c,CandidatoCompletoDTO.class);
-                    candidatoCompletoDTO.setDadosEscolares(dadosEscolaresService.findByIdCandidato(c.getIdCandidato()));
-                    candidatoCompletoDTO.setExperiencias(experienciasService.findByIdCandidato(c.getIdCandidato()));
-                    return candidatoCompletoDTO;
-                })
-                .collect(Collectors.toList());
-
-        return PaginaCandidatoCompletoDTO.builder()
-                .candidatosCompletos(candidatoCompletoDTOList)
-                .totalDeElementos(paginaCandidatoDTO.getTotalDeElementos())
-                .totalDePaginas(paginaCandidatoDTO.getTotalDePaginas())
-                .build();
-    }
-
-    public CandidatoCompletoDTO create(CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
-        return candidatoCompletoCreateDTOToCandidatoCompletoDTO(null, candidatoCompletoCreateDTO);
-    }
-
-    public CandidatoCompletoDTO update(Integer idCandidato, CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
-        return candidatoCompletoCreateDTOToCandidatoCompletoDTO(idCandidato, candidatoCompletoCreateDTO);
-    }
-
-    private CandidatoCompletoDTO candidatoCompletoCreateDTOToCandidatoCompletoDTO(Integer idCandidato, CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
-        CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
-        CandidatoDTO candidatoDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoDTO.class);
-        CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(candidatoDTO,CandidatoCompletoDTO.class);;
-        CandidatoEntity candidatoEntity = objectMapper.convertValue(candidatoDTO,CandidatoEntity.class);
-
-        if(idCandidato != null){
-            candidatoEntity = objectMapper.convertValue((candidatoService.update(idCandidato,candidatoCreateDTO)), CandidatoEntity.class);
-            candidatoCompletoDTO.setIdCandidato(candidatoEntity.getIdCandidato());
-            candidatoCompletoDTO.setDadosEscolares(dadosEscolaresService.update(candidatoEntity, candidatoCompletoCreateDTO.getDadosEscolares()));
-            candidatoCompletoDTO.setExperiencias(experienciasService.update(candidatoEntity, candidatoCompletoCreateDTO.getExperiencias()));
-            return candidatoCompletoDTO;
-        }
-        //saves
-        candidatoEntity = objectMapper.convertValue((candidatoService.create(candidatoCreateDTO)), CandidatoEntity.class);
-        candidatoCompletoDTO.setIdCandidato(candidatoEntity.getIdCandidato());
-        candidatoCompletoDTO.setDadosEscolares(dadosEscolaresService.create(candidatoEntity, candidatoCompletoCreateDTO.getDadosEscolares()));
-        candidatoCompletoDTO.setExperiencias(experienciasService.create(candidatoEntity, candidatoCompletoCreateDTO.getExperiencias()));
-        return candidatoCompletoDTO;
-    }*/
-
     public PaginaCandidatoCompletoDTO listPaginado(Integer idCandidato, Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
         PaginaCandidatoDTO paginaCandidatoDTO = candidatoService.listPaginado(idCandidato, pagina, quantidadePorPagina);
         List<CandidatoCompletoDTO> candidatoCompletoDTOList = paginaCandidatoDTO.getCandidatos().stream()
