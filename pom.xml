@@ -103,6 +103,7 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
         </dependency>
+
     </dependencies>
     <dependencyManagement>
         <dependencies>

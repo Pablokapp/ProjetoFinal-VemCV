@@ -23,19 +23,13 @@ public class CurriculoController {
 
     private final CurriculoService curriculoService;
 
-
     @PostMapping("/upload-curriculo/{idCandidato}")
     ResponseEntity<CurriculoDTO> uploadCurriculo(@RequestPart("curriculo") MultipartFile curriculo, @PathVariable("idCandidato") Integer idCandidato) throws RegraDeNegocioException {
     return ResponseEntity.ok(curriculoService.uploadCurriculoCandidato(curriculo, idCandidato));
     }
 
-
-
-
     @GetMapping("/download-curriculo/{idCandidato}")
     public ResponseEntity<Resource> downloadCurriculo(@PathVariable Integer idCandidato) {
         return curriculoService.downloadCurriculo(idCandidato);
     }
-
-
 }

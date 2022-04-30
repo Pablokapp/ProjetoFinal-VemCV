@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -77,8 +78,8 @@ public class VagaService {
 
 
 
-//    @PostConstruct
-//    @Scheduled(cron = "* * 4 * * *")
+    @PostConstruct
+    @Scheduled(cron = "* * 4 * * *")
     public void atualizarTodasVagas() throws RegraDeNegocioException {
         this.verificarAcesso();
 
@@ -87,15 +88,15 @@ public class VagaService {
         PaginaVagasCompleoReduzidaDTO paginaCompleo = vagasCompleoService.listar(1,1);
 
         //busca vagas locais em uma consulta só
-        Map<Integer,VagaEntity> vagaEntityList = vagaRepository.findAll().stream().collect(Collectors.toMap(VagaEntity::getId,v->v));
+//        Map<Integer,VagaEntity> vagaEntityList = vagaRepository.findAll().stream().collect(Collectors.toMap(VagaEntity::getId,v->v));
         VagaEntity vagaLocal;
 
-        for(int paginaAtual=1; paginaAtual*QUANTIDADE_POR_PAGINA < paginaCompleo.getTotal(); paginaAtual++){
+        for(int paginaAtual=1; (paginaAtual-1)*QUANTIDADE_POR_PAGINA < paginaCompleo.getTotal(); paginaAtual++){
             paginaCompleo = vagasCompleoService.listarAlteracoes(paginaAtual,QUANTIDADE_POR_PAGINA);
 
             for(VagaCompleoReduzidaDTO vaga: paginaCompleo.getVagas()){
 
-                vagaLocal = vagaEntityList.getOrDefault(vaga.getId(), null);//this.findById(vaga.getId());//todo testar uma consulta só
+                vagaLocal = this.findById(vaga.getId());//vagaEntityList.getOrDefault(vaga.getId(), null);////todo testar uma consulta só
 
                 if(vagaLocal==null){
                     log.info("salvando nova vaga de id: "+vaga.getId()+
@@ -103,7 +104,7 @@ public class VagaService {
                     this.save(objectMapper.convertValue(vaga,VagaEntity.class));
                 }else if(vaga.getUltimaAtualizacao().isAfter(vagaLocal.getUltimaAtualizacao())){
                     log.info("salvando atualizacao na vaga de id: "+vaga.getId()+
-                            "datas: "+vaga.getUltimaAtualizacao()+" || "+vagaLocal.getUltimaAtualizacao());
+                            "\ndatas: "+vaga.getUltimaAtualizacao()+" || "+vagaLocal.getUltimaAtualizacao());
                     //salvar lista de candidatos na vaga atualizada antes de salvar
                     VagaEntity vagaExterna = objectMapper.convertValue(vaga, VagaEntity.class);
                     Set<CandidatoEntity> candidatos = vagaLocal.getCandidatos();
