@@ -71,7 +71,7 @@ public class CandidatoService {
 
     public PaginaCandidatoDTO listPaginado(Integer idCandidato, Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
         List<CandidatoDTO>  candidatoByID = new ArrayList<>();
-        Pageable pageable = PageRequest.of(pagina==null?0:pagina, quantidadePorPagina==null?10:quantidadePorPagina, Sort.by("idCandidato").ascending());
+        Pageable pageable = PageRequest.of(pagina==null?0:pagina, quantidadePorPagina==null?10:quantidadePorPagina<1?1:quantidadePorPagina, Sort.by("idCandidato").ascending());
         if (idCandidato == null) {
             Page<CandidatoEntity> paginaCandidatos = candidatoRepository.findAll(pageable);
             return PaginaCandidatoDTO.builder()

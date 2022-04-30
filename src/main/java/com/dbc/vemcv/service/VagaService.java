@@ -34,7 +34,7 @@ public class VagaService {
     public PaginaVagasCompleoReduzidaDTO listarVagasEmAberto(Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
         this.verificarAcesso();
 
-        Pageable pageable = PageRequest.of(pagina, quantidadePorPagina);
+        Pageable pageable = PageRequest.of(pagina==null?0:pagina, quantidadePorPagina==null?10:quantidadePorPagina<1?1:quantidadePorPagina);
         Page<VagaEntity> vagasPaginadas = vagaRepository.findByStatusIn(ABERTAS, pageable);
 
         List<VagaEntity> vagas = new ArrayList<>(vagasPaginadas.stream().collect(Collectors.toList()));
