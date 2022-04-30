@@ -1,5 +1,6 @@
 package com.dbc.vemcv;
 
+import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.entity.VagaEntity;
 import com.dbc.vemcv.enums.ServerStatus;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
@@ -20,6 +21,9 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -62,10 +66,34 @@ public class VagaServiceTest {
 
     @Test
     public void retornaListaDeCandidatosPorVaga(){
-       /* when(vagaRepository.findById(any())).thenReturn(
-                Arrays.asList(
-                       1,2));*/
+        Set<CandidatoEntity> candidatos = new HashSet<>();
+        CandidatoEntity candidato = new CandidatoEntity();
+        CandidatoEntity candidato2 = new CandidatoEntity();
+        candidato.setIdCandidato(1);
+        candidato2.setIdCandidato(2);
+        candidatos.add(candidato);
+        candidatos.add(candidato2);
+        VagaEntity vagaEntity = new VagaEntity();
+        vagaEntity.setCandidatos(candidatos);
+
+
+        try {
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vagaEntity));
+//            when(vagaRepository.findById(any(Integer.class)).orElseThrow(()->new RegraDeNegocioException("Vaga não encontrada")).getCandidatos()).thenReturn(candidatos);
+
+            assertEquals(1,this.vagaService.listarCandidatosPorVaga(1).get(0));
+            assertEquals(2,this.vagaService.listarCandidatosPorVaga(1).get(1));
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+
     }
+
+    /*when(vagaRepository.findById(any()).orElseThrow(any())).thenReturn(new VagaEntity(1,"","","","",
+                LocalDate.of(2000,1,1),"",
+                "","",true,
+                LocalDateTime.of(2000,1,1,0,0),
+                null));*/
 
     /* new VagaEntity(1,"","","","",
                                 LocalDate.of(2000,1,1),"",

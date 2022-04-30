@@ -78,7 +78,7 @@ public class VagaService {
 
 
 //    @PostConstruct
-    @Scheduled(cron = "* * 4 * * *")
+//    @Scheduled(cron = "* * 4 * * *")
     public void atualizarTodasVagas() throws RegraDeNegocioException {
         this.verificarAcesso();
 
@@ -139,7 +139,8 @@ public class VagaService {
     @Transactional
     public List<Integer> listarCandidatosPorVaga(Integer idVaga) throws RegraDeNegocioException {
         return vagaRepository.findById(idVaga).orElseThrow(()->new RegraDeNegocioException("Vaga não encontrada"))
-                .getCandidatos().stream()
+                .getCandidatos()
+                .stream()
                 .map(CandidatoEntity::getIdCandidato)
                 .collect(Collectors.toList());
     }
