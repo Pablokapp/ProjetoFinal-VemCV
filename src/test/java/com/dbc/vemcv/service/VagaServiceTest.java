@@ -7,10 +7,6 @@ import com.dbc.vemcv.entity.VagaEntity;
 import com.dbc.vemcv.enums.ServerStatus;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.repository.VagaRepository;
-import com.dbc.vemcv.service.CandidatoService;
-import com.dbc.vemcv.service.ServerPropertiesService;
-import com.dbc.vemcv.service.VagaService;
-import com.dbc.vemcv.service.VagasCompleoService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.Before;
@@ -70,7 +66,7 @@ public class VagaServiceTest {
         candidatos.add(candidato);
         candidatos.add(candidato2);
 
-        VagaEntity vaga = new VagaEntity(1,"","","","",
+        VagaEntity vaga = new VagaEntity(1,"","Em Andamento","","",
                 LocalDate.of(2000,1,1),"",
                 "","",true,
                 LocalDateTime.of(2000,1,1,0,0),
@@ -83,9 +79,11 @@ public class VagaServiceTest {
             when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vaga));
             when(candidatoService.findById(any(Integer.class))).thenReturn(candidato);
 
-            vagaService.vincularCandidato(1,1);
+            verify(vagaRepository,times(0)).save(any(VagaEntity.class));
 
-            verify(vagaRepository,times(1)).save(any(VagaEntity.class));
+            Exception exception = assertThrows(RegraDeNegocioException.class, ()->this.vagaService.vincularCandidato(1,1));
+
+            assertTrue(exception.getMessage().contains("Candidato já vinculado à vaga"));
 
         } catch (RegraDeNegocioException e) {
             e.printStackTrace();
@@ -104,7 +102,7 @@ public class VagaServiceTest {
 
         CandidatoEntity candidatoNovo = new CandidatoEntity();
 
-        VagaEntity vaga = new VagaEntity(1,"","","","",
+        VagaEntity vaga = new VagaEntity(1,"","Em Andamento","","",
                 LocalDate.of(2000,1,1),"",
                 "","",true,
                 LocalDateTime.of(2000,1,1,0,0),
@@ -137,13 +135,16 @@ public class VagaServiceTest {
                 .total(1)
                 .build();
 
-        List<VagaEntity> vagaEntityList = new ArrayList<>();
+        VagaEntity vaga = null;
+
+//        List<VagaEntity> vagaEntityList = new ArrayList<>();
 
 
         try {
             when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
             doNothing().when(serverPropertiesService).setStatusAtualizando();
-            when(vagaRepository.findAll()).thenReturn(vagaEntityList);
+//            when(vagaRepository.findAll()).thenReturn(vagaEntityList);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(vaga));
 
             when(vagasCompleoService.listar(any(),any())).thenReturn(paginaVagasCompleo);
             when(vagasCompleoService.listarAlteracoes(any(),any())).thenReturn(paginaVagasCompleo);
@@ -170,22 +171,25 @@ public class VagaServiceTest {
                 .total(1)
                 .build();
 
-        List<VagaEntity> vagaEntityList = new ArrayList<>();
-        vagaEntityList.add(new VagaEntity(1,"","Em Andamento","","",
+        VagaEntity vaga = new VagaEntity(1,"","Em Andamento","","",
                 LocalDate.of(2000,1,1),"",
                 "","",true,
                 LocalDateTime.of(1999,1,1,0,0),
-                null));
+                null);
+
+//        List<VagaEntity> vagaEntityList = new ArrayList<>();
+//        vagaEntityList.add(vaga);
 
         try {
             when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
             doNothing().when(serverPropertiesService).setStatusAtualizando();
-            when(vagaRepository.findAll()).thenReturn(vagaEntityList);
+//            when(vagaRepository.findAll()).thenReturn(vagaEntityList);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vaga));
 
             when(vagasCompleoService.listar(any(),any())).thenReturn(paginaVagasCompleo);
             when(vagasCompleoService.listarAlteracoes(any(),any())).thenReturn(paginaVagasCompleo);
 
-            when(vagaRepository.save(any(VagaEntity.class))).thenReturn(vagaEntityList.get(0));
+            when(vagaRepository.save(any(VagaEntity.class))).thenReturn(vaga);
 
             vagaService.atualizarTodasVagas();
 
@@ -196,7 +200,7 @@ public class VagaServiceTest {
         }
     }
 
-    /*@Test
+    @Test
     public void testarAtualizacaoDeVagasJaAtualizadaDeveApenasSair(){
         PaginaVagasCompleoReduzidaDTO paginaVagasCompleo = PaginaVagasCompleoReduzidaDTO.builder()
                 .vagas(Arrays.asList(VagaCompleoReduzidaDTO.builder()
@@ -209,17 +213,20 @@ public class VagaServiceTest {
                 .total(1)
                 .build();
 
-        List<VagaEntity> vagaEntityList = new ArrayList<>();
-        vagaEntityList.add(new VagaEntity(1,"","Em Andamento","","",
+        VagaEntity vaga = new VagaEntity(1,"","Em Andamento","","",
                 LocalDate.of(2000,1,1),"",
                 "","",true,
                 LocalDateTime.of(2001,1,1,0,0),
-                null));
+                null);
+
+//        List<VagaEntity> vagaEntityList = new ArrayList<>();
+//        vagaEntityList.add(vaga);
 
         try {
             when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
             doNothing().when(serverPropertiesService).setStatusAtualizando();
-            when(vagaRepository.findAll()).thenReturn(vagaEntityList);
+//            when(vagaRepository.findAll()).thenReturn(vagaEntityList);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vaga));
 
             when(vagasCompleoService.listar(any(),any())).thenReturn(paginaVagasCompleo);
             when(vagasCompleoService.listarAlteracoes(any(),any())).thenReturn(paginaVagasCompleo);
@@ -231,7 +238,7 @@ public class VagaServiceTest {
         } catch (RegraDeNegocioException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
     @Test
     public void testarGetUltimaAtualizacao(){

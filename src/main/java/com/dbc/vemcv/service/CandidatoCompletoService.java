@@ -55,13 +55,16 @@ public class CandidatoCompletoService {
         CandidatoDTO candidatoCriado = candidatoService.create(candidatoCreateDTO);
         List<DadosEscolaresDTO> dadosEscolaresDTOList = new ArrayList<>();
         List<ExperienciasDTO> experienciasDTOList = new ArrayList<>();
-        for(DadosEscolaresCreateDTO dadosEscolares: candidatoCompletoCreateDTO.getDadosEscolares()){
-            dadosEscolaresDTOList.add(dadosEscolaresService.create(candidatoCriado.getIdCandidato(),dadosEscolares));
+        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null){
+            for(DadosEscolaresCreateDTO dadosEscolares: candidatoCompletoCreateDTO.getDadosEscolares()){
+                dadosEscolaresDTOList.add(dadosEscolaresService.create(candidatoCriado.getIdCandidato(),dadosEscolares));
+            }
         }
-        for(ExperienciasCreateDTO experiencia:candidatoCompletoCreateDTO.getExperiencias()){
-            experienciasDTOList.add(experienciasService.create(candidatoCriado.getIdCandidato(),experiencia));
+        if(candidatoCompletoCreateDTO.getExperiencias()!=null) {
+            for (ExperienciasCreateDTO experiencia : candidatoCompletoCreateDTO.getExperiencias()) {
+                experienciasDTOList.add(experienciasService.create(candidatoCriado.getIdCandidato(), experiencia));
+            }
         }
-
         CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(candidatoCriado,CandidatoCompletoDTO.class);
         candidatoCompletoDTO.setDadosEscolares(dadosEscolaresDTOList);
         candidatoCompletoDTO.setExperiencias(experienciasDTOList);
@@ -76,11 +79,15 @@ public class CandidatoCompletoService {
         CandidatoDTO candidatoAtualizado = candidatoService.update(idCandidato, candidatoCreateDTO);
         List<DadosEscolaresDTO> dadosEscolaresList = dadosEscolaresService.findByIdCandidato(idCandidato);
         List<ExperienciasDTO> experienciasList = experienciasService.findByIdCandidato(idCandidato);
-        for(DadosEscolaresDTO dadosEscolaresDTO:dadosEscolaresList){
-            dadosEscolaresService.delete(dadosEscolaresDTO.getIdDadosEscolares());
+        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null) {
+            for (DadosEscolaresDTO dadosEscolaresDTO : dadosEscolaresList) {
+                dadosEscolaresService.delete(dadosEscolaresDTO.getIdDadosEscolares());
+            }
         }
-        for(ExperienciasDTO experienciasDTO:experienciasList){
-            experienciasService.delete(experienciasDTO.getIdExperiencia());
+        if(candidatoCompletoCreateDTO.getExperiencias()!=null) {
+            for (ExperienciasDTO experienciasDTO : experienciasList) {
+                experienciasService.delete(experienciasDTO.getIdExperiencia());
+            }
         }
 
         List<DadosEscolaresDTO> dadosEscolaresDTOList = new ArrayList<>();
