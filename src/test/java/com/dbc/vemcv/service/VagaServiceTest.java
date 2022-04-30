@@ -1,4 +1,4 @@
-package com.dbc.vemcv;
+package com.dbc.vemcv.service;
 
 import com.dbc.vemcv.dto.vagas.PaginaVagasCompleoReduzidaDTO;
 import com.dbc.vemcv.dto.vagas.VagaCompleoReduzidaDTO;
@@ -19,7 +19,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.slf4j.Logger;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
@@ -52,13 +51,79 @@ public class VagaServiceTest {
         ReflectionTestUtils.setField(vagaService,"objectMapper",objectMapper);
     }
 
-    /*public void vincularCandidatoVagaInexistente(){}
+    @Test
+    public void vincularCandidatoVagaInexistenteDeveDevolverExcessao(){}
 
-    public void */
+    @Test
+    public void vincularCandidatoVagaFechadaDeveDevolverExcessao(){}
+
+    @Test
+    public void vincularCandidatoVagaSemCandidatosDeveSalvar(){}
+
+    @Test
+    public void vincularCandidatosJaVinculadoDeveDevolverExcessao(){
+        Set<CandidatoEntity> candidatos = new HashSet<>();
+        CandidatoEntity candidato = new CandidatoEntity();
+        CandidatoEntity candidato2 = new CandidatoEntity();
+        candidato.setIdCandidato(1);
+        candidato2.setIdCandidato(2);
+        candidatos.add(candidato);
+        candidatos.add(candidato2);
+
+        VagaEntity vaga = new VagaEntity(1,"","","","",
+                LocalDate.of(2000,1,1),"",
+                "","",true,
+                LocalDateTime.of(2000,1,1,0,0),
+                candidatos);
 
 
 
+        try {
+            when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vaga));
+            when(candidatoService.findById(any(Integer.class))).thenReturn(candidato);
 
+            vagaService.vincularCandidato(1,1);
+
+            verify(vagaRepository,times(1)).save(any(VagaEntity.class));
+
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void vincularCandidatosVagaJaPossuiCandidatosDeveAdicionarESalvar(){
+        Set<CandidatoEntity> candidatos = new HashSet<>();
+        CandidatoEntity candidato = new CandidatoEntity();
+        CandidatoEntity candidato2 = new CandidatoEntity();
+        candidato.setIdCandidato(1);
+        candidato2.setIdCandidato(2);
+        candidatos.add(candidato);
+        candidatos.add(candidato2);
+
+        CandidatoEntity candidatoNovo = new CandidatoEntity();
+
+        VagaEntity vaga = new VagaEntity(1,"","","","",
+                LocalDate.of(2000,1,1),"",
+                "","",true,
+                LocalDateTime.of(2000,1,1,0,0),
+                candidatos);
+
+
+        try {
+            when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vaga));
+            when(candidatoService.findById(any(Integer.class))).thenReturn(candidatoNovo);
+
+            vagaService.vincularCandidato(1,1);
+
+            verify(vagaRepository,times(1)).save(any(VagaEntity.class));
+
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void testarAtualizacaoDeVagasComVagaLocalNulaDeveApenasSalvar(){
@@ -86,6 +151,7 @@ public class VagaServiceTest {
             vagaService.atualizarTodasVagas();
 
             verify(vagaRepository,times(1)).save(any(VagaEntity.class));
+
         } catch (RegraDeNegocioException e) {
             e.printStackTrace();
         }
@@ -105,7 +171,7 @@ public class VagaServiceTest {
                 .build();
 
         List<VagaEntity> vagaEntityList = new ArrayList<>();
-        vagaEntityList.add(new VagaEntity(1,"","","","",
+        vagaEntityList.add(new VagaEntity(1,"","Em Andamento","","",
                 LocalDate.of(2000,1,1),"",
                 "","",true,
                 LocalDateTime.of(1999,1,1,0,0),
@@ -130,7 +196,7 @@ public class VagaServiceTest {
         }
     }
 
-    @Test
+    /*@Test
     public void testarAtualizacaoDeVagasJaAtualizadaDeveApenasSair(){
         PaginaVagasCompleoReduzidaDTO paginaVagasCompleo = PaginaVagasCompleoReduzidaDTO.builder()
                 .vagas(Arrays.asList(VagaCompleoReduzidaDTO.builder()
@@ -144,7 +210,7 @@ public class VagaServiceTest {
                 .build();
 
         List<VagaEntity> vagaEntityList = new ArrayList<>();
-        vagaEntityList.add(new VagaEntity(1,"","","","",
+        vagaEntityList.add(new VagaEntity(1,"","Em Andamento","","",
                 LocalDate.of(2000,1,1),"",
                 "","",true,
                 LocalDateTime.of(2001,1,1,0,0),
@@ -165,7 +231,7 @@ public class VagaServiceTest {
         } catch (RegraDeNegocioException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     @Test
     public void testarGetUltimaAtualizacao(){

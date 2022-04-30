@@ -10,12 +10,10 @@ import com.dbc.vemcv.repository.VagaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -73,13 +71,13 @@ public class VagaService {
             candidatos.add(candidato);
 //            vaga.setCandidatos(candidatos);
         }
-        vagaRepository.save(vaga);
+        this.save(vaga);
     }
 
 
 
-    @PostConstruct
-    @Scheduled(cron = "* * 4 * * *")
+//    @PostConstruct
+//    @Scheduled(cron = "* * 4 * * *")
     public void atualizarTodasVagas() throws RegraDeNegocioException {
         this.verificarAcesso();
 
