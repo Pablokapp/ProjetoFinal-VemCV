@@ -28,7 +28,6 @@ public class DadosEscolaresService {
 
     private final DadosEscolaresRepository dadosEscolaresRepository;
     private final CandidatoService candidatoService;
-    private final CandidatoRepository candidatoRepository;
     private final ObjectMapper objectMapper;
 
     @Transactional
