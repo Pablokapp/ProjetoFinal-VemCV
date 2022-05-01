@@ -33,20 +33,6 @@ public class UsuarioEntity implements UserDetails {
     @Column(name = "senha")
     private String senha;
 
-//    @ManyToMany
-//    @JoinTable(
-//            name = "usuario_x_cargo",
-//            joinColumns = @JoinColumn(name = "id_usuario"),
-//            inverseJoinColumns = @JoinColumn(name = "id_cargo")
-//    )
-//    private Set<CargoEntity> cargos;
-
-//    @Override
-//    public List<CargoEntity> getAuthorities() {
-//        return new ArrayList<>(this.getCargos());
-//    }
-
-
     @ManyToOne()
     @JoinColumn(name = "fk_cargo")
     private CargoEntity cargo;
@@ -58,16 +44,6 @@ public class UsuarioEntity implements UserDetails {
         rule.add(cargo);
         return rule;
     }
-
-
-
-
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return null;
-//    }
-
 
     @Override
     public String getPassword() {

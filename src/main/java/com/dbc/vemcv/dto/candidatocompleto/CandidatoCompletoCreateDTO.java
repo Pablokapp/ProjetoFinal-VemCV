@@ -5,6 +5,7 @@ import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Data
 @Builder
+@ToString
 public class CandidatoCompletoCreateDTO {
     @NotEmpty
     @ApiModelProperty("Nome completo do candidato")

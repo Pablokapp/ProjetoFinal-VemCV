@@ -14,6 +14,7 @@ import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class CandidatoCompletoService {
     private final CandidatoService candidatoService;
@@ -49,22 +51,23 @@ public class CandidatoCompletoService {
     }
 
     public CandidatoCompletoDTO create(CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
+        log.info("CANDIDATO ENVIADO:  "+candidatoCompletoCreateDTO);
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
 
         //saves
         CandidatoDTO candidatoCriado = candidatoService.create(candidatoCreateDTO);
         List<DadosEscolaresDTO> dadosEscolaresDTOList = new ArrayList<>();
         List<ExperienciasDTO> experienciasDTOList = new ArrayList<>();
-        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null){
+//        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null&&!candidatoCompletoCreateDTO.getDadosEscolares().isEmpty()){
             for(DadosEscolaresCreateDTO dadosEscolares: candidatoCompletoCreateDTO.getDadosEscolares()){
                 dadosEscolaresDTOList.add(dadosEscolaresService.create(candidatoCriado.getIdCandidato(),dadosEscolares));
             }
-        }
-        if(candidatoCompletoCreateDTO.getExperiencias()!=null) {
+//        }
+//        if(candidatoCompletoCreateDTO.getExperiencias()!=null&&!candidatoCompletoCreateDTO.getExperiencias().isEmpty()) {
             for (ExperienciasCreateDTO experiencia : candidatoCompletoCreateDTO.getExperiencias()) {
                 experienciasDTOList.add(experienciasService.create(candidatoCriado.getIdCandidato(), experiencia));
             }
-        }
+//        }
         CandidatoCompletoDTO candidatoCompletoDTO = objectMapper.convertValue(candidatoCriado,CandidatoCompletoDTO.class);
         candidatoCompletoDTO.setDadosEscolares(dadosEscolaresDTOList);
         candidatoCompletoDTO.setExperiencias(experienciasDTOList);
@@ -79,16 +82,16 @@ public class CandidatoCompletoService {
         CandidatoDTO candidatoAtualizado = candidatoService.update(idCandidato, candidatoCreateDTO);
         List<DadosEscolaresDTO> dadosEscolaresList = dadosEscolaresService.findByIdCandidato(idCandidato);
         List<ExperienciasDTO> experienciasList = experienciasService.findByIdCandidato(idCandidato);
-        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null) {
+//        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null&&!candidatoCompletoCreateDTO.getDadosEscolares().isEmpty()){
             for (DadosEscolaresDTO dadosEscolaresDTO : dadosEscolaresList) {
                 dadosEscolaresService.delete(dadosEscolaresDTO.getIdDadosEscolares());
             }
-        }
-        if(candidatoCompletoCreateDTO.getExperiencias()!=null) {
+//        }
+//        if(candidatoCompletoCreateDTO.getExperiencias()!=null&&!candidatoCompletoCreateDTO.getExperiencias().isEmpty()) {
             for (ExperienciasDTO experienciasDTO : experienciasList) {
                 experienciasService.delete(experienciasDTO.getIdExperiencia());
             }
-        }
+//        }
 
         List<DadosEscolaresDTO> dadosEscolaresDTOList = new ArrayList<>();
         List<ExperienciasDTO> experienciasDTOList = new ArrayList<>();
