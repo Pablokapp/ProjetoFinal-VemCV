@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+
 public class CandidatoService {
 
     private final CandidatoRepository candidatoRepository;
