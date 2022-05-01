@@ -1,20 +1,14 @@
 package com.dbc.vemcv.controller.cadidato;
 
 import com.dbc.vemcv.dto.candidato.*;
-import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
-import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.CandidatoService;
-import com.dbc.vemcv.service.DadosEscolaresService;
-import com.dbc.vemcv.service.ExperienciasService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

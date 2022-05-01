@@ -29,7 +29,7 @@ public interface CurriculoAPI {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     @ApiOperation("Recupera o curriculo")
-    public ResponseEntity<Resource> downloadCurriculo(@PathVariable Integer idCandidato);
+    ResponseEntity<Resource> downloadCurriculo(@PathVariable Integer idCandidato);
 
 
 }

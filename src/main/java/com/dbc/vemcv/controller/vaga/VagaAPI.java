@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Api
 @Validated
@@ -23,8 +24,8 @@ public interface VagaAPI {
     })
     @ApiOperation("Lista vagas em aberto paginadas")
     ResponseEntity<PaginaVagasCompleoReduzidaDTO> buscarVagasEmAberto(@RequestParam("pagina") Integer pagina,
-                                                                             @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina)
-                                                                            throws RegraDeNegocioException;
+                                                                      @RequestParam("quantidade-por-pagina") Integer quantidadePorPagina)
+            throws RegraDeNegocioException;
 
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Candidato vinculado à vaga com sucesso"),
@@ -51,4 +52,20 @@ public interface VagaAPI {
     })
     @ApiOperation("Data da última atualização das vagas no servidor local")
     ResponseEntity<LocalDateTime> getDataUltimaAtualizacao() throws RegraDeNegocioException;
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Acesso livre ao banco de dados das cagas"),
+            @ApiResponse(code = 400, message = "Servidor ocupado"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
+    })
+    @ApiOperation("Retorna o status do acesso ao banco de vagas")
+    void getServerStatus() throws RegraDeNegocioException;
+
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Lista retornada com sucesso"),
+            @ApiResponse(code = 400, message = "Sem permissão para acessar esse recurso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
+    })
+    @ApiOperation("Retorna a lista de IDs dos candidatos vinculados à vaga")
+    ResponseEntity<List<Integer>> getListaCandidatos(@RequestParam("id-vaga") Integer idVaga) throws RegraDeNegocioException;
 }

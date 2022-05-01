@@ -3,17 +3,12 @@ package com.dbc.vemcv.controller.curriculo;
 import com.dbc.vemcv.dto.curriculo.CurriculoDTO;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.service.CurriculoService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/curriculo")
