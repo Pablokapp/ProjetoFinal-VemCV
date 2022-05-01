@@ -2,15 +2,11 @@ package com.dbc.vemcv.service;
 
 import com.dbc.vemcv.config.client.CompleoClient;
 import com.dbc.vemcv.dto.vagas.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -27,14 +23,6 @@ public class VagasCompleoServiceTest {
 
     @InjectMocks
     private VagasCompleoService vagasCompleoService;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
-    @Before
-    public void BeforeEach() {
-        objectMapper.registerModule(new JavaTimeModule());//corrigir LocalDateTime no mapper
-        ReflectionTestUtils.setField(vagasCompleoService,"objectMapper",objectMapper);
-    }
 
     @Test
     public void listar() {

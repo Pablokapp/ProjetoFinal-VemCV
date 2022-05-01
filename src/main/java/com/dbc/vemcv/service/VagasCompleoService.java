@@ -2,18 +2,13 @@ package com.dbc.vemcv.service;
 
 import com.dbc.vemcv.config.client.CompleoClient;
 import com.dbc.vemcv.dto.vagas.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +16,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class VagasCompleoService {
     private final CompleoClient compleoClient;
-    private final ObjectMapper objectMapper;
 
     public PaginaVagasCompleoReduzidaDTO listar(Integer pagina, Integer quantidadePorPagina){
         PaginaVagasCompleoCompletaDTO paginaCompleo = compleoClient.listar(pagina, quantidadePorPagina, false);
@@ -46,7 +40,7 @@ public class VagasCompleoService {
                     vagaCompleoReduzidaDTO.setUltimaAtualizacao(v.getHistoricoMudancaStatus().stream()
                             .map(HistoricoMudancaStatusVagaDTO::getData)
                             .max(LocalDateTime::compareTo)
-                            .orElse(v.getDataAbertura().toInstant().atZone(ZoneId.of("UTC-03:00")).toLocalDateTime()));
+                            .orElse(v.getDataAbertura().toInstant().atZone(ZoneId.of("UTC-03:00")).toLocalDateTime()));//se nao tiver atualizacoes na vaga, usa a data de criacao como ultima atualizacao
                     return vagaCompleoReduzidaDTO;
                 })
                 .collect(Collectors.toList());

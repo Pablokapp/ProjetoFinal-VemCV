@@ -7,7 +7,6 @@ import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.entity.ExperienciasEntity;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
-import com.dbc.vemcv.repository.CandidatoRepository;
 import com.dbc.vemcv.repository.ExperienciasRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class ExperienciasService {
 
     public ExperienciasDTO create(Integer idCandidato, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
-        Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+        Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
 
         ExperienciasEntity entity = objectMapper.convertValue(experienciasCreateDTO, ExperienciasEntity.class);
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
@@ -50,7 +49,7 @@ public class ExperienciasService {
 
     public ExperienciasDTO update(Integer idExperiencia, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
-        Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+        Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
 
         ExperienciasEntity entity = this.findById(idExperiencia);
         BeanUtils.copyProperties(experienciasCreateDTO, entity);

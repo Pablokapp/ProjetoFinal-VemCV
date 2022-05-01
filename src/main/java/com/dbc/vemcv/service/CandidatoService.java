@@ -67,8 +67,7 @@ public class CandidatoService {
             this.validarCPF(candidatoCreateDTO.getCpf());
             candidatoAtual.setCpf(candidatoCreateDTO.getCpf());
         }
-        CandidatoDTO candidatoAtualizado = objectMapper.convertValue((candidatoRepository.save(candidatoAtual)), CandidatoDTO.class);
-        return candidatoAtualizado;
+        return objectMapper.convertValue((candidatoRepository.save(candidatoAtual)), CandidatoDTO.class);
     }
 
 

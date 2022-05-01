@@ -1,8 +1,10 @@
 package com.dbc.vemcv.service;
 
+import com.dbc.vemcv.entity.CargoEntity;
 import com.dbc.vemcv.enums.ServerStatus;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.dbc.vemcv.model.ServerProperties;
+import com.dbc.vemcv.repository.CargoRepository;
 import com.dbc.vemcv.repository.ServerPropertiesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,14 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class ServerPropertiesService {
     private final ServerPropertiesRepository serverPropertiesRepository;
+    private final CargoRepository cargoRepository;
 
     @PostConstruct//inicializa os dados do servidor
     public void ServerInit() throws RegraDeNegocioException {
+        if(!cargoRepository.existsById(1)){
+            cargoRepository.save(CargoEntity.builder().nome("ROLE_CADASTRADOR").build());
+        }
+
         if(serverPropertiesRepository.existsById(1)){
             ServerProperties serverProperties = this.getServerProperties();
             serverProperties.setStatus(ServerStatus.INICIALIZADO);

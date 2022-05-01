@@ -30,6 +30,8 @@ import static org.mockito.Mockito.*;
 public class ServerPropertiesServiceTest {
     @Mock
     private ServerPropertiesRepository serverPropertiesRepository;
+    @Mock
+    private CargoRepository cargoRepository;
 
     @InjectMocks
     private ServerPropertiesService serverPropertiesService;
@@ -39,6 +41,9 @@ public class ServerPropertiesServiceTest {
     public void serverInitNaoInicializado() {
         when(serverPropertiesRepository.existsById(any(Integer.class))).thenReturn(false);
         when(serverPropertiesRepository.save(any(ServerProperties.class))).thenReturn(new ServerProperties());
+
+        when(cargoRepository.existsById(any(Integer.class))).thenReturn(false);
+        when(cargoRepository.save(any(CargoEntity.class))).thenReturn(null);
 
         try {
             serverPropertiesService.ServerInit();
@@ -58,6 +63,9 @@ public class ServerPropertiesServiceTest {
         when(serverPropertiesRepository.save(any(ServerProperties.class))).thenReturn(new ServerProperties());
 
         when(serverPropertiesRepository.findById(any(Integer.class))).thenReturn(Optional.of(serverProperties));
+
+        when(cargoRepository.existsById(any(Integer.class))).thenReturn(false);
+        when(cargoRepository.save(any(CargoEntity.class))).thenReturn(null);
 
         try {
             serverPropertiesService.ServerInit();
@@ -116,13 +124,5 @@ public class ServerPropertiesServiceTest {
         } catch (RegraDeNegocioException e) {
             e.printStackTrace();
         }
-    }
-
-    @Test
-    public void getServerStatus() {
-    }
-
-    @Test
-    public void setStatusAtualizando() {
     }
 }

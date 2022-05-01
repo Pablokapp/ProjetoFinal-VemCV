@@ -7,7 +7,6 @@ import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.entity.DadosEscolaresEntity;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
-import com.dbc.vemcv.repository.CandidatoRepository;
 import com.dbc.vemcv.repository.DadosEscolaresRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +15,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,7 +40,7 @@ public class DadosEscolaresService {
 
     public DadosEscolaresDTO create(Integer idCandidato, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
-        Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+        Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
 
         DadosEscolaresEntity entity = objectMapper.convertValue(dadosEscolaresCreateDTO, DadosEscolaresEntity.class);
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
@@ -53,7 +50,7 @@ public class DadosEscolaresService {
 
     public DadosEscolaresDTO update(Integer idDadosEscolares, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
-        Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+        Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
 
         DadosEscolaresEntity entity = this.findById(idDadosEscolares);
         BeanUtils.copyProperties(dadosEscolaresCreateDTO, entity);

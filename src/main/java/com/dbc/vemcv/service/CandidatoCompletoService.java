@@ -10,7 +10,6 @@ import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
-import com.dbc.vemcv.entity.CandidatoEntity;
 import com.dbc.vemcv.exceptions.RegraDeNegocioException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +27,6 @@ public class CandidatoCompletoService {
     private final CandidatoService candidatoService;
     private final DadosEscolaresService dadosEscolaresService;
     private final ExperienciasService experienciasService;
-    private final CurriculoService curriculoService;
 
     private final ObjectMapper objectMapper;
 
@@ -53,8 +51,6 @@ public class CandidatoCompletoService {
     public CandidatoCompletoDTO create(CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
         log.info("CANDIDATO ENVIADO:  "+candidatoCompletoCreateDTO);
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
-
-        //saves
 
         CandidatoDTO candidatoCriado = candidatoService.create(candidatoCreateDTO);
 
@@ -84,6 +80,8 @@ public class CandidatoCompletoService {
         CandidatoDTO candidatoAtualizado = candidatoService.update(idCandidato, candidatoCreateDTO);
         List<DadosEscolaresDTO> dadosEscolaresList = dadosEscolaresService.findByIdCandidato(idCandidato);
         List<ExperienciasDTO> experienciasList = experienciasService.findByIdCandidato(idCandidato);
+
+        //primeiro e feita uma remocao de todos os dados e experiencias, pois e mais performatico do que verificar de 1 em 1 se precisa ser atualizada
         if(candidatoCompletoCreateDTO.getDadosEscolares()!=null&&!candidatoCompletoCreateDTO.getDadosEscolares().isEmpty()){
             for (DadosEscolaresDTO dadosEscolaresDTO : dadosEscolaresList) {
                 dadosEscolaresService.delete(dadosEscolaresDTO.getIdDadosEscolares());

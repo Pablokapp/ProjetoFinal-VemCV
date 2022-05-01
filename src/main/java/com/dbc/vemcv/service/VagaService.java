@@ -10,10 +10,12 @@ import com.dbc.vemcv.repository.VagaRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.*;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -58,18 +60,17 @@ public class VagaService {
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
         if(vaga==null){//vaga nula, propaga excessao
             throw new RegraDeNegocioException("Vaga inexistente");
-        }else if(!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))&&!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){
+        }else if(!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(0))&&!vaga.getStatus().equalsIgnoreCase(ABERTAS.get(1))){//se a vaga nao estiver em andamento ou aberta, nao pode vincular
             throw new RegraDeNegocioException("Vaga não está em andamento");
         }else if(vaga.getCandidatos()==null){//lista de candidatos nula, cria lista
             Set<CandidatoEntity> candidatos = new HashSet<>();
             candidatos.add(candidato);
             vaga.setCandidatos(candidatos);
-        }else if(vaga.getCandidatos().contains(candidato)){
+        }else if(vaga.getCandidatos().contains(candidato)){//se o candidato ja estiver vinculado, propaga excessao para o front
             throw new RegraDeNegocioException("Candidato já vinculado à vaga");
         } else{//lista existente, adiciona candidato
             Set<CandidatoEntity> candidatos = vaga.getCandidatos();
             candidatos.add(candidato);
-//            vaga.setCandidatos(candidatos);
         }
         this.save(vaga);
     }
@@ -94,7 +95,7 @@ public class VagaService {
 
             for(VagaCompleoReduzidaDTO vaga: paginaCompleo.getVagas()){
 
-                vagaLocal = this.findById(vaga.getId());//vagaEntityList.getOrDefault(vaga.getId(), null);////
+                vagaLocal = this.findById(vaga.getId());//vagaEntityList.getOrDefault(vaga.getId(), null);//
 
                 if(vagaLocal==null){
                     log.info("salvando nova vaga de id: "+vaga.getId()+
