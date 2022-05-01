@@ -23,25 +23,10 @@ public class VagasCompleoService {
     private final CompleoClient compleoClient;
     private final ObjectMapper objectMapper;
 
-    public PaginaVagasCompleoReduzidaDTO listarNovos(Integer pagina, Integer quantidadePorPagina){
-        PaginaVagasCompleoCompletaDTO paginaCompleo = compleoClient.listar(pagina, quantidadePorPagina, false);
-
-        List<VagaCompleoReduzidaDTO> vagasReduzidasDTO = paginaCompleo.getVagaGeralList().stream()
-//                .filter(v->v.getDataAbertura().after(Date.from(LocalDate.now().minusDays(1).atStartOfDay(ZoneId.of("UTC-03:00")).toInstant())))//todo ZoneId.systemDefault() talvez
-                .map(v -> {
-                    log.info("Titulo da vaga buscada: " + v.getTitulo() + " | status: "+v.getStatus());
-                    return this.mapVagaCompleo(v);
-                })
-                .collect(Collectors.toList());
-
-        return this.montarPagina(vagasReduzidasDTO, paginaCompleo);
-    }
-
     public PaginaVagasCompleoReduzidaDTO listar(Integer pagina, Integer quantidadePorPagina){
         PaginaVagasCompleoCompletaDTO paginaCompleo = compleoClient.listar(pagina, quantidadePorPagina, false);
 
         List<VagaCompleoReduzidaDTO> vagasReduzidasDTO = paginaCompleo.getVagaGeralList().stream()
-                .filter(v->v.getDataAbertura().after(Date.from(LocalDate.now().minusYears(1).atStartOfDay(ZoneId.of("UTC-03:00")).toInstant())))//todo deixar assim?
                 .map(v -> {
                     log.info("Titulo da vaga buscada: " + v.getTitulo() + " | status: "+v.getStatus());
                     return this.mapVagaCompleo(v);
@@ -61,7 +46,7 @@ public class VagasCompleoService {
                     vagaCompleoReduzidaDTO.setUltimaAtualizacao(v.getHistoricoMudancaStatus().stream()
                             .map(HistoricoMudancaStatusVagaDTO::getData)
                             .max(LocalDateTime::compareTo)
-                            .orElse(v.getDataAbertura().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()));//todo substituir por data de abertura da vaga?
+                            .orElse(v.getDataAbertura().toInstant().atZone(ZoneId.of("UTC-03:00")).toLocalDateTime()));
                     return vagaCompleoReduzidaDTO;
                 })
                 .collect(Collectors.toList());
