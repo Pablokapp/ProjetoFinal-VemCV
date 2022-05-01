@@ -51,9 +51,6 @@ public class CandidatoServiceTest {
 
     @Before
     public void BeforeEach() {
-//        objectMapper.registerModule(new JavaTimeModule());//corrigir LocalDateTime no mapper
-//        ReflectionTestUtils.setField(candidatoService,"objectMapper",objectMapper);
-
         dadosEscolaresCreateDTO =
                 DadosEscolaresCreateDTO.builder()
                         .instituicao("instituicao")
@@ -136,7 +133,6 @@ public class CandidatoServiceTest {
 
         Pageable pageable = PageRequest.of(0, 10);
         Page<CandidatoEntity> page = new PageImpl<>(new ArrayList<>());
-        when(candidatoRepository.findAll(pageable)).thenReturn(page);
         List<CandidatoDTO> candidatoDTOList = new ArrayList<>();
         candidatoDTOList.add(candidatoDTO);
 
@@ -147,7 +143,6 @@ public class CandidatoServiceTest {
 
         try {
 
-            when(candidatoRepository.findAll(pageable)).thenReturn(page);
             when(objectMapper.convertValue(candidatoEntity, CandidatoDTO.class)).thenReturn(candidatoDTO);
             when(candidatoRepository.findById(anyInt())).thenReturn(Optional.of(candidatoEntity));
             PaginaCandidatoDTO paginaCandidatoDTORetorno = candidatoService.listPaginado(1,1, 1);
