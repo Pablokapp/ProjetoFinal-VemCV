@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 public class ExperienciasService {
 
     private final ExperienciasRepository experienciasRepository;
-    private final CandidatoRepository candidatoRepository;
+    private final CandidatoService candidatoService;
     private final ObjectMapper objectMapper;
 
     public List<ExperienciasDTO> list(Integer idCandidato) {
@@ -36,49 +36,32 @@ public class ExperienciasService {
 
     public ExperienciasDTO create(Integer idCandidato, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
         ExperienciasEntity entity = objectMapper.convertValue(experienciasCreateDTO, ExperienciasEntity.class);
-        CandidatoEntity candidato = candidatoRepository.findById(idCandidato). orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidato = candidatoService.findById(idCandidato);
         entity.setCandidato(candidato);
         ExperienciasEntity save = experienciasRepository.save(entity);
         return objectMapper.convertValue(save, ExperienciasDTO.class);
     }
 
-    public List<ExperienciasDTO> create(CandidatoEntity candidatoEntity, List<ExperienciasCreateDTO> experienciasCreateDTOS) throws RegraDeNegocioException {
-        experienciasCreateDTOS.forEach(experiencia -> {
-            ExperienciasEntity entity = objectMapper.convertValue(experiencia, ExperienciasEntity.class);
-            entity.setCandidato(candidatoEntity);
-            experienciasRepository.save(entity);
-        });
-        return findByIdCandidato(candidatoEntity.getIdCandidato());
-    }
-
     public ExperienciasDTO update(Integer idExperiencia, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
-        ExperienciasEntity entity = experienciasRepository.findById(idExperiencia).orElseThrow(() -> new RegraDeNegocioException("Experiência não encontrada"));
+        ExperienciasEntity entity = this.findById(idExperiencia);
         BeanUtils.copyProperties(experienciasCreateDTO, entity);
         ExperienciasEntity update = experienciasRepository.save(entity);
         return objectMapper.convertValue(update, ExperienciasDTO.class);
     }
 
-    public List<ExperienciasDTO> update(CandidatoEntity candidatoEntity, List<ExperienciasCreateDTO> experienciasCreateDTOS) throws RegraDeNegocioException {
-    candidatoEntity.getExperiencias().forEach(experiencia -> {
-        try{
-            delete(experiencia.getIdExperiencia());
-        }catch (RegraDeNegocioException e){
-            e.printStackTrace();
-        }
-    });
-       return create(candidatoEntity, experienciasCreateDTOS);
-    }
-
-    public String delete(Integer idExperiencia) throws RegraDeNegocioException {
-        ExperienciasEntity experiencias = experienciasRepository.findById(idExperiencia).orElseThrow(() -> new RegraDeNegocioException("Experiência não encontrada"));
+    public void delete(Integer idExperiencia) throws RegraDeNegocioException {
+        ExperienciasEntity experiencias = this.findById(idExperiencia);
         experienciasRepository.delete(experiencias);
-        return "Experiência removida com sucesso";
     }
 
     public List<ExperienciasDTO> findByIdCandidato(Integer idCandidato){
         return experienciasRepository.findByIdCandidato(idCandidato).stream()
                 .map(e->objectMapper.convertValue(e,ExperienciasDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    private ExperienciasEntity findById(Integer idExperiencia) throws RegraDeNegocioException {
+        return experienciasRepository.findById(idExperiencia).orElseThrow(() -> new RegraDeNegocioException("Experiência não encontrada"));
     }
 
 }

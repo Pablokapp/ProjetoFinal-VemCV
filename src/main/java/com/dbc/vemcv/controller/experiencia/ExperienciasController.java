@@ -38,7 +38,8 @@ public class ExperienciasController implements ExperienciaAPI{
 
     @DeleteMapping("/remover/{id}")
     public ResponseEntity<String> remover(@RequestParam(value = "idExperiencia") Integer idExperiencia) throws RegraDeNegocioException {
-        return ResponseEntity.ok(experienciaService.delete(idExperiencia));
+        experienciaService.delete(idExperiencia);
+        return ResponseEntity.ok("Experiências deletadas com sucesso");
     }
 
 

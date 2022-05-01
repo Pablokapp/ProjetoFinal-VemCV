@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 public class DadosEscolaresService {
 
     private final DadosEscolaresRepository dadosEscolaresRepository;
+    private final CandidatoService candidatoService;
     private final CandidatoRepository candidatoRepository;
     private final ObjectMapper objectMapper;
 
@@ -36,40 +37,19 @@ public class DadosEscolaresService {
 
     public DadosEscolaresDTO create(Integer idCandidato, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         DadosEscolaresEntity entity = objectMapper.convertValue(dadosEscolaresCreateDTO, DadosEscolaresEntity.class);
-        CandidatoEntity candidato = candidatoRepository.findById(idCandidato). orElseThrow(() -> new RegraDeNegocioException("Candidato não encontrado"));
+        CandidatoEntity candidato = candidatoService.findById(idCandidato);
         entity.setCandidato(candidato);
         return objectMapper.convertValue(dadosEscolaresRepository.save(entity), DadosEscolaresDTO.class);
     }
 
-    public List<DadosEscolaresDTO> create(CandidatoEntity candidatoEntity, List<DadosEscolaresCreateDTO> dadosEscolaresCreateDTOS) throws RegraDeNegocioException {
-        dadosEscolaresCreateDTOS.forEach(dadosEscolaresCreateDTO -> {
-            DadosEscolaresEntity entity = objectMapper.convertValue(dadosEscolaresCreateDTO, DadosEscolaresEntity.class);
-            entity.setCandidato(candidatoEntity);
-            dadosEscolaresRepository.save(entity);
-        });
-        return findByIdCandidato(candidatoEntity.getIdCandidato());
-    }
-
     public DadosEscolaresDTO update(Integer idDadosEscolares, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
-        DadosEscolaresEntity entity = dadosEscolaresRepository.findById(idDadosEscolares).orElseThrow(() -> new RegraDeNegocioException("Dado escolar não encontrado"));
+        DadosEscolaresEntity entity = this.findById(idDadosEscolares);
         BeanUtils.copyProperties(dadosEscolaresCreateDTO, entity);
         return objectMapper.convertValue(dadosEscolaresRepository.save(entity), DadosEscolaresDTO.class);
     }
 
-    public List<DadosEscolaresDTO> update(CandidatoEntity candidatoEntity, List<DadosEscolaresCreateDTO> dadosEscolaresCreateDTOS) throws RegraDeNegocioException {
-        candidatoEntity.getDadosEscolares().forEach(dadosEscolaresEntity -> {
-            try {
-                delete(dadosEscolaresEntity.getIdDadosEscolares());
-            } catch (RegraDeNegocioException e) {
-                e.printStackTrace();
-            }
-        });
-        return create(candidatoEntity, dadosEscolaresCreateDTOS);
-    }
-
-
     public void delete(Integer idDadosEscolares) throws RegraDeNegocioException {
-        DadosEscolaresEntity dadosEscolares = dadosEscolaresRepository.findById(idDadosEscolares).orElseThrow(() -> new RegraDeNegocioException("Dado Escolar não encontrado"));
+        DadosEscolaresEntity dadosEscolares = this.findById(idDadosEscolares);
         dadosEscolaresRepository.delete(dadosEscolares);
     }
 
@@ -77,6 +57,10 @@ public class DadosEscolaresService {
         return dadosEscolaresRepository.findByIdCandidato(idCandidato).stream()
                 .map(de->objectMapper.convertValue(de,DadosEscolaresDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    private DadosEscolaresEntity findById(Integer idDadosEscolares) throws RegraDeNegocioException {
+        return dadosEscolaresRepository.findById(idDadosEscolares).orElseThrow(() -> new RegraDeNegocioException("Dado Escolar não encontrado"));
     }
 
 }
