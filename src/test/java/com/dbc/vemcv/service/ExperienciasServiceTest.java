@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,7 +53,8 @@ public class ExperienciasServiceTest {
 
     @Test
     public void create() {
-        ExperienciasCreateDTO experienciaDTO = ExperienciasCreateDTO.builder().build();
+        LocalDate data = LocalDate.of(2000,1,1);
+        ExperienciasCreateDTO experienciaDTO = ExperienciasCreateDTO.builder().dataInicio(data).dataFim(data).build();
         ExperienciasEntity experiencia = ExperienciasEntity.builder().build();
         CandidatoEntity candidato = CandidatoEntity.builder().build();
 
@@ -71,7 +73,8 @@ public class ExperienciasServiceTest {
 
     @Test
     public void update() {
-        ExperienciasCreateDTO experienciaDTO = ExperienciasCreateDTO.builder().build();
+        LocalDate data = LocalDate.of(2000,1,1);
+        ExperienciasCreateDTO experienciaDTO = ExperienciasCreateDTO.builder().dataInicio(data).dataFim(data).build();
         ExperienciasEntity experiencia = ExperienciasEntity.builder().build();
         CandidatoEntity candidato = CandidatoEntity.builder().build();
 

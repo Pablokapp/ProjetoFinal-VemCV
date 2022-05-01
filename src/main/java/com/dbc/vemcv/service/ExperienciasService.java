@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class ExperienciasService {
     private final CandidatoService candidatoService;
     private final ObjectMapper objectMapper;
 
+    @Transactional
     public List<ExperienciasDTO> list(Integer idCandidato) {
         if(!(idCandidato == null)) {
             return findByIdCandidato(idCandidato);

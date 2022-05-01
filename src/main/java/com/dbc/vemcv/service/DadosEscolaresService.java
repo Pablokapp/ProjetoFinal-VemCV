@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ public class DadosEscolaresService {
     private final CandidatoRepository candidatoRepository;
     private final ObjectMapper objectMapper;
 
+    @Transactional
     public List<DadosEscolaresDTO> list(Integer idCandidato) {
         if(!(idCandidato == null)) {
             return findByIdCandidato(idCandidato);
