@@ -15,6 +15,10 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
@@ -48,13 +52,116 @@ public class VagaServiceTest {
     }
 
     @Test
-    public void vincularCandidatoVagaInexistenteDeveDevolverExcessao(){}
+    public void listarVagasEmAbertoDeveRetornarUmaPagina(){
+        VagaEntity vaga = new VagaEntity(1,"","Em Aberto","","",
+                LocalDate.of(2000,1,1),"",
+                "","",true,
+                LocalDateTime.of(2000,1,1,0,0),
+                null);
+        Pageable pageable = PageRequest.of(0,10);
+        Page<VagaEntity> paginaDeVagas = new PageImpl<VagaEntity>(Arrays.asList(vaga),pageable,1);
+
+        try {
+            when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
+            when(vagaRepository.findByStatusIn(anyList(),any(Pageable.class))).thenReturn(paginaDeVagas);
+
+            PaginaVagasCompleoReduzidaDTO resultado = vagaService.listarVagasEmAberto(1,1);
+
+            assertEquals(1,resultado.getVagas().size());
+            assertEquals(1,resultado.getTotal());
+            assertEquals(1,resultado.getPaginas());
+            assertEquals(1,resultado.getPagina());
+            assertEquals(1,resultado.getQuantidade());
+
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Test
-    public void vincularCandidatoVagaFechadaDeveDevolverExcessao(){}
+    public void vincularCandidatoVagaInexistenteDeveDevolverExcessao(){
+        CandidatoEntity candidato = new CandidatoEntity();
+        candidato.setIdCandidato(1);
+
+        VagaEntity vaga = null;
+
+
+
+        try {
+            when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.ofNullable(vaga));
+            when(candidatoService.findById(any(Integer.class))).thenReturn(candidato);
+
+            verify(vagaRepository,times(0)).save(any(VagaEntity.class));
+
+            Exception exception = assertThrows(RegraDeNegocioException.class, ()->this.vagaService.vincularCandidato(1,1));
+
+            assertTrue(exception.getMessage().contains("Vaga inexistente"));
+
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
-    public void vincularCandidatoVagaSemCandidatosDeveSalvar(){}
+    public void vincularCandidatoVagaFechadaDeveDevolverExcessao(){
+        Set<CandidatoEntity> candidatos = new HashSet<>();
+        CandidatoEntity candidato = new CandidatoEntity();
+        CandidatoEntity candidato2 = new CandidatoEntity();
+        candidato.setIdCandidato(1);
+        candidato2.setIdCandidato(2);
+        candidatos.add(candidato);
+        candidatos.add(candidato2);
+
+        VagaEntity vaga = new VagaEntity(1,"","Fechada","","",
+                LocalDate.of(2000,1,1),"",
+                "","",true,
+                LocalDateTime.of(2000,1,1,0,0),
+                candidatos);
+
+
+
+        try {
+            when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vaga));
+            when(candidatoService.findById(any(Integer.class))).thenReturn(candidato);
+
+            verify(vagaRepository,times(0)).save(any(VagaEntity.class));
+
+            Exception exception = assertThrows(RegraDeNegocioException.class, ()->this.vagaService.vincularCandidato(1,1));
+
+            assertTrue(exception.getMessage().contains("Vaga não está em andamento"));
+
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void vincularCandidatoVagaSemCandidatosDeveCriarListaESalvar(){
+        CandidatoEntity candidatoNovo = new CandidatoEntity();
+
+        VagaEntity vaga = new VagaEntity(1,"","Em Andamento","","",
+                LocalDate.of(2000,1,1),"",
+                "","",true,
+                LocalDateTime.of(2000,1,1,0,0),
+                null);
+
+
+        try {
+            when(serverPropertiesService.getServerStatus()).thenReturn(ServerStatus.ATUALIZADO);
+            when(vagaRepository.findById(any(Integer.class))).thenReturn(Optional.of(vaga));
+            when(candidatoService.findById(any(Integer.class))).thenReturn(candidatoNovo);
+
+            vagaService.vincularCandidato(1,1);
+
+            verify(vagaRepository,times(1)).save(any(VagaEntity.class));
+
+        } catch (RegraDeNegocioException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Test
     public void vincularCandidatosJaVinculadoDeveDevolverExcessao(){
