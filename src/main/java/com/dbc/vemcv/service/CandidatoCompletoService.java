@@ -55,7 +55,9 @@ public class CandidatoCompletoService {
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
 
         //saves
+
         CandidatoDTO candidatoCriado = candidatoService.create(candidatoCreateDTO);
+
         List<DadosEscolaresDTO> dadosEscolaresDTOList = new ArrayList<>();
         List<ExperienciasDTO> experienciasDTOList = new ArrayList<>();
         if(candidatoCompletoCreateDTO.getDadosEscolares()!=null&&!candidatoCompletoCreateDTO.getDadosEscolares().isEmpty()){
