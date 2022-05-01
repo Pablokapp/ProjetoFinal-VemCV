@@ -77,8 +77,8 @@ public class VagaService {
 
 
 
-//    @PostConstruct
-//    @Scheduled(cron = "* * 4 * * *")
+    @PostConstruct
+    @Scheduled(cron = "* * 4 * * *")
     public void atualizarTodasVagas() throws RegraDeNegocioException {
         this.verificarAcesso();
 
