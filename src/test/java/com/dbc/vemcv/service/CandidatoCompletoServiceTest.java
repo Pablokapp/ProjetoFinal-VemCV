@@ -144,10 +144,10 @@ public class CandidatoCompletoServiceTest {
 
     @Test
     public void listPaginado() {
-
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<CandidatoEntity> page = new PageImpl<>(new ArrayList<>());
-        when(candidatoRepository.findAll(pageable)).thenReturn(page);
+//
+//        Pageable pageable = PageRequest.of(0, 10);
+//        Page<CandidatoEntity> page = new PageImpl<>(new ArrayList<>());
+//        when(candidatoRepository.findAll(pageable)).thenReturn(page);
 
         List<CandidatoDTO> candidatoDTOList = new ArrayList<>();
         candidatoDTOList.add(candidatoDTO);

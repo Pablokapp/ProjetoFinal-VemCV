@@ -1,6 +1,7 @@
 package com.dbc.vemcv.service;
 
 
+import com.dbc.vemcv.common.Utils;
 import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoDTO;
 import com.dbc.vemcv.dto.candidato.PaginaCandidatoDTO;
@@ -13,6 +14,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,9 +43,11 @@ public class CandidatoService {
     }
 
     public CandidatoDTO create(CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
-        this.validarCPF(candidatoCreateDTO.getCpf());
+        //validacao da idade
+        Utils.validacaoDeTempo(candidatoCreateDTO.getDataNascimento().atStartOfDay(), LocalDateTime.now(), Duration.between(LocalDateTime.now().minusYears(14), LocalDateTime.now()).toDays(),"O candidato deve possuir mais de 14 anos");
+
         CandidatoEntity entity = objectMapper.convertValue(candidatoCreateDTO, CandidatoEntity.class);
-        CandidatoEntity save = candidatoRepository.save(entity);
+        CandidatoEntity save = this.save(entity);
         return objectMapper.convertValue(save, CandidatoDTO.class);
     }
 
@@ -52,6 +57,9 @@ public class CandidatoService {
     }
 
     public CandidatoDTO update(Integer idCandidato, CandidatoCreateDTO candidatoCreateDTO) throws RegraDeNegocioException {
+        //validacao da idade
+        Utils.validacaoDeTempo(candidatoCreateDTO.getDataNascimento().atStartOfDay(), LocalDateTime.now(), Duration.between(LocalDateTime.now().minusYears(14), LocalDateTime.now()).toDays(),"O candidato deve possuir mais de 14 anos");
+
         CandidatoEntity candidatoAtual = this.findById(idCandidato);
         BeanUtils.copyProperties(candidatoCreateDTO, candidatoAtual, "id", "cpf");
 
@@ -59,7 +67,7 @@ public class CandidatoService {
             this.validarCPF(candidatoCreateDTO.getCpf());
             candidatoAtual.setCpf(candidatoCreateDTO.getCpf());
         }
-        CandidatoDTO candidatoAtualizado = objectMapper.convertValue((candidatoRepository.save(candidatoAtual)), CandidatoDTO.class);
+        CandidatoDTO candidatoAtualizado = objectMapper.convertValue((this.save(candidatoAtual)), CandidatoDTO.class);
         return candidatoAtualizado;
     }
 

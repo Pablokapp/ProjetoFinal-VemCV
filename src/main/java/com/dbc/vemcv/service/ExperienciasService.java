@@ -1,6 +1,7 @@
 package com.dbc.vemcv.service;
 
 
+import com.dbc.vemcv.common.Utils;
 import com.dbc.vemcv.dto.experiencias.ExperienciasCreateDTO;
 import com.dbc.vemcv.dto.experiencias.ExperienciasDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
@@ -35,6 +36,9 @@ public class ExperienciasService {
     }
 
     public ExperienciasDTO create(Integer idCandidato, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
+        //validacao das datas
+        Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+
         ExperienciasEntity entity = objectMapper.convertValue(experienciasCreateDTO, ExperienciasEntity.class);
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
         entity.setCandidato(candidato);
@@ -43,6 +47,9 @@ public class ExperienciasService {
     }
 
     public ExperienciasDTO update(Integer idExperiencia, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
+        //validacao das datas
+        Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+
         ExperienciasEntity entity = this.findById(idExperiencia);
         BeanUtils.copyProperties(experienciasCreateDTO, entity);
         ExperienciasEntity update = experienciasRepository.save(entity);

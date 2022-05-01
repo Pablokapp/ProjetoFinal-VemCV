@@ -1,6 +1,7 @@
 package com.dbc.vemcv.service;
 
 
+import com.dbc.vemcv.common.Utils;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresCreateDTO;
 import com.dbc.vemcv.dto.dadosescolares.DadosEscolaresDTO;
 import com.dbc.vemcv.entity.CandidatoEntity;
@@ -10,12 +11,16 @@ import com.dbc.vemcv.repository.CandidatoRepository;
 import com.dbc.vemcv.repository.DadosEscolaresRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DadosEscolaresService {
@@ -36,6 +41,9 @@ public class DadosEscolaresService {
     }
 
     public DadosEscolaresDTO create(Integer idCandidato, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
+        //validacao das datas
+        Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+
         DadosEscolaresEntity entity = objectMapper.convertValue(dadosEscolaresCreateDTO, DadosEscolaresEntity.class);
         CandidatoEntity candidato = candidatoService.findById(idCandidato);
         entity.setCandidato(candidato);
@@ -43,6 +51,9 @@ public class DadosEscolaresService {
     }
 
     public DadosEscolaresDTO update(Integer idDadosEscolares, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
+        //validacao das datas
+        Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Datas não correspondem");
+
         DadosEscolaresEntity entity = this.findById(idDadosEscolares);
         BeanUtils.copyProperties(dadosEscolaresCreateDTO, entity);
         return objectMapper.convertValue(dadosEscolaresRepository.save(entity), DadosEscolaresDTO.class);
