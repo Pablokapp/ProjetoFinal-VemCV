@@ -1,5 +1,6 @@
 package com.dbc.vemcv.service;
 
+import com.dbc.vemcv.common.Utils;
 import com.dbc.vemcv.dto.candidato.CandidatoCreateDTO;
 import com.dbc.vemcv.dto.candidato.CandidatoDTO;
 import com.dbc.vemcv.dto.candidato.PaginaCandidatoDTO;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,9 +50,23 @@ public class CandidatoCompletoService {
                 .build();
     }
 
+    @Transactional
     public CandidatoCompletoDTO create(CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
         log.info("CANDIDATO ENVIADO:  "+candidatoCompletoCreateDTO);
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
+
+        //hotfix: mesmo como transação, não está acontecendo o rollback em caso de excessão nos dados e experiências então o teste foi feito novamente aqui como horfix
+        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null&&!candidatoCompletoCreateDTO.getDadosEscolares().isEmpty()) {
+            for (DadosEscolaresCreateDTO dadosEscolares : candidatoCompletoCreateDTO.getDadosEscolares()) {
+                Utils.validacaoDeTempo(dadosEscolares.getDataInicio().atStartOfDay(),dadosEscolares.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
+            }
+        }
+        if(candidatoCompletoCreateDTO.getExperiencias()!=null&&!candidatoCompletoCreateDTO.getExperiencias().isEmpty()) {
+            for (ExperienciasCreateDTO experiencia : candidatoCompletoCreateDTO.getExperiencias()) {
+                Utils.validacaoDeTempo(experiencia.getDataInicio().atStartOfDay(),experiencia.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
+            }
+        }
+
 
         CandidatoDTO candidatoCriado = candidatoService.create(candidatoCreateDTO);
 
@@ -73,9 +89,21 @@ public class CandidatoCompletoService {
         return candidatoCompletoDTO;
     }
 
-
+    @Transactional
     public CandidatoCompletoDTO update(Integer idCandidato, CandidatoCompletoCreateDTO candidatoCompletoCreateDTO) throws RegraDeNegocioException {
         CandidatoCreateDTO candidatoCreateDTO = objectMapper.convertValue(candidatoCompletoCreateDTO,CandidatoCreateDTO.class);
+
+        //hotfix: mesmo como transação, não está acontecendo o rollback em caso de excessão nos dados e experiências então o teste foi feito novamente aqui como horfix
+        if(candidatoCompletoCreateDTO.getDadosEscolares()!=null&&!candidatoCompletoCreateDTO.getDadosEscolares().isEmpty()) {
+            for (DadosEscolaresCreateDTO dadosEscolares : candidatoCompletoCreateDTO.getDadosEscolares()) {
+                Utils.validacaoDeTempo(dadosEscolares.getDataInicio().atStartOfDay(),dadosEscolares.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
+            }
+        }
+        if(candidatoCompletoCreateDTO.getExperiencias()!=null&&!candidatoCompletoCreateDTO.getExperiencias().isEmpty()) {
+            for (ExperienciasCreateDTO experiencia : candidatoCompletoCreateDTO.getExperiencias()) {
+                Utils.validacaoDeTempo(experiencia.getDataInicio().atStartOfDay(),experiencia.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
+            }
+        }
 
         CandidatoDTO candidatoAtualizado = candidatoService.update(idCandidato, candidatoCreateDTO);
         List<DadosEscolaresDTO> dadosEscolaresList = dadosEscolaresService.findByIdCandidato(idCandidato);

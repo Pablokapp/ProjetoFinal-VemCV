@@ -36,6 +36,7 @@ public class ExperienciasService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public ExperienciasDTO create(Integer idCandidato, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
         Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
@@ -47,6 +48,7 @@ public class ExperienciasService {
         return objectMapper.convertValue(save, ExperienciasDTO.class);
     }
 
+    @Transactional
     public ExperienciasDTO update(Integer idExperiencia, ExperienciasCreateDTO experienciasCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
         Utils.validacaoDeTempo(experienciasCreateDTO.getDataInicio().atStartOfDay(),experienciasCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");

@@ -38,6 +38,8 @@ public class DadosEscolaresService {
                 .collect(Collectors.toList());
     }
 
+
+    @Transactional
     public DadosEscolaresDTO create(Integer idCandidato, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
         Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
@@ -48,6 +50,7 @@ public class DadosEscolaresService {
         return objectMapper.convertValue(dadosEscolaresRepository.save(entity), DadosEscolaresDTO.class);
     }
 
+    @Transactional
     public DadosEscolaresDTO update(Integer idDadosEscolares, DadosEscolaresCreateDTO dadosEscolaresCreateDTO) throws RegraDeNegocioException {
         //validacao das datas
         Utils.validacaoDeTempo(dadosEscolaresCreateDTO.getDataInicio().atStartOfDay(),dadosEscolaresCreateDTO.getDataFim().atStartOfDay(),0L,"Data final deve ser após a Data de início");
