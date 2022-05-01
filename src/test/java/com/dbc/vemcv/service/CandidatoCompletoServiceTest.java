@@ -85,7 +85,7 @@ public class CandidatoCompletoServiceTest {
         dadosEscolaresCreateDTO =
                 DadosEscolaresCreateDTO.builder()
                         .instituicao("instituicao")
-                        .dataInicio(LocalDate.now())
+                        .dataInicio(LocalDate.of(2020, 1, 1))
                         .dataFim(LocalDate.of(2020, 1, 1))
                         .descricao("descricao").build();
 
@@ -94,7 +94,7 @@ public class CandidatoCompletoServiceTest {
 
         experienciasCreateDTO = ExperienciasCreateDTO.builder()
                 .nomeEmpresa("nomeEmpresa")
-                .dataInicio(LocalDate.now())
+                .dataInicio(LocalDate.of(2020, 1, 1))
                 .dataFim(LocalDate.of(2020, 1, 1))
                 .descricao("descricao").build();
 
