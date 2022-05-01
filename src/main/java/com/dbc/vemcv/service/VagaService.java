@@ -34,7 +34,7 @@ public class VagaService {
     public PaginaVagasCompleoReduzidaDTO listarVagasEmAberto(Integer pagina, Integer quantidadePorPagina) throws RegraDeNegocioException {
         this.verificarAcesso();
 
-        Pageable pageable = PageRequest.of(pagina==null?0:pagina, quantidadePorPagina==null?10:quantidadePorPagina<1?1:quantidadePorPagina);
+        Pageable pageable = PageRequest.of(pagina==null?0:pagina, quantidadePorPagina==null?10:quantidadePorPagina<1?1:quantidadePorPagina, Sort.by("ultimaAtualizacao").descending());
         Page<VagaEntity> vagasPaginadas = vagaRepository.findByStatusIn(ABERTAS, pageable);
 
         List<VagaEntity> vagas = new ArrayList<>(vagasPaginadas.stream().collect(Collectors.toList()));
@@ -94,7 +94,7 @@ public class VagaService {
 
             for(VagaCompleoReduzidaDTO vaga: paginaCompleo.getVagas()){
 
-                vagaLocal = this.findById(vaga.getId());//vagaEntityList.getOrDefault(vaga.getId(), null);////todo testar uma consulta só
+                vagaLocal = this.findById(vaga.getId());//vagaEntityList.getOrDefault(vaga.getId(), null);////
 
                 if(vagaLocal==null){
                     log.info("salvando nova vaga de id: "+vaga.getId()+
